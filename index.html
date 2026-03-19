@@ -54,37 +54,21 @@
         </button>
       </div>
 
-      <!-- GLOBE D3 -->
+      <!-- GLOBE: CSS para colores, D3 solo para paths de continentes -->
       <div class="hero-globe-side">
         <div class="globe-wrapper">
-          <!-- Gradientes en el markup HTML — no en JS — garantiza compatibilidad en todos los browsers -->
+          <!-- Capa 1: océano (CSS radial-gradient, 100% confiable en todos los browsers) -->
+          <div class="globe-ocean"></div>
+          <!-- Capa 2: continentes animados con D3 (SVG transparente encima) -->
           <svg id="globe-svg" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <radialGradient id="oceanGrad" gradientUnits="userSpaceOnUse" cx="225" cy="210" r="375">
-                <stop offset="0%"   stop-color="#1e7ab5"/>
-                <stop offset="40%"  stop-color="#0c4272"/>
-                <stop offset="100%" stop-color="#040f20"/>
-              </radialGradient>
-              <radialGradient id="atmoGrad" gradientUnits="userSpaceOnUse" cx="300" cy="300" r="315">
-                <stop offset="74%"  stop-color="transparent"/>
-                <stop offset="88%"  stop-color="rgba(70,150,255,0.22)"/>
-                <stop offset="100%" stop-color="transparent"/>
-              </radialGradient>
-              <radialGradient id="glareGrad" gradientUnits="userSpaceOnUse" cx="192" cy="182" r="100">
-                <stop offset="0%"   stop-color="rgba(255,255,255,0.10)"/>
-                <stop offset="60%"  stop-color="rgba(255,255,255,0.02)"/>
-                <stop offset="100%" stop-color="transparent"/>
-              </radialGradient>
-              <linearGradient id="shadowGrad" gradientUnits="userSpaceOnUse" x1="265" y1="300" x2="596" y2="300">
-                <stop offset="0%"   stop-color="transparent"/>
-                <stop offset="42%"  stop-color="rgba(0,4,18,0.28)"/>
-                <stop offset="100%" stop-color="rgba(0,3,14,0.84)"/>
-              </linearGradient>
               <clipPath id="sphereClip">
                 <circle cx="300" cy="300" r="296"/>
               </clipPath>
             </defs>
           </svg>
+          <!-- Capa 3: sombra nocturna + destello solar (CSS, encima del SVG) -->
+          <div class="globe-overlay"></div>
         </div>
       </div>
 
@@ -196,31 +180,17 @@
 
     const path = d3.geoPath().projection(projection);
 
-    // Los gradientes y clipPath ya están definidos en el HTML del SVG.
-    // Solo añadimos los elementos visuales que los referencian.
-
+    // Colores de continentes
     const landColors = {
-      norteamerica: '#5a9644',
-      sudamerica:   '#4d8f3a',
-      europa:       '#5ea650',
-      africa:       '#c49a42',
-      asia:         '#4f9040',
-      oceania:      '#7ab856',
-      groenlandia:  '#d4e8f0',
-      antartida:    '#ddeef4'
+      norteamerica: '#4e8a3a',
+      sudamerica:   '#447d32',
+      europa:       '#529140',
+      africa:       '#b8903c',
+      asia:         '#467e36',
+      oceania:      '#6aaa4a',
+      groenlandia:  '#c8dde8',
+      antartida:    '#d8eaf2'
     };
-
-    // Atmosphere ring (fuera de la esfera)
-    svg.append('circle')
-      .attr('cx', CX).attr('cy', CY)
-      .attr('r', radius + 15)
-      .attr('fill', 'url(#atmoGrad)');
-
-    // Océano
-    svg.append('circle')
-      .attr('cx', CX).attr('cy', CY)
-      .attr('r', radius)
-      .attr('fill', 'url(#oceanGrad)');
 
     // Graticule (clipped)
     const graticuleG = svg.append('g').attr('clip-path', 'url(#sphereClip)');
@@ -228,40 +198,18 @@
     const gratPath = graticuleG.append('path')
       .datum(grat)
       .attr('fill', 'none')
-      .attr('stroke', 'rgba(150,210,255,0.09)')
-      .attr('stroke-width', 0.5);
+      .attr('stroke', 'rgba(255,255,255,0.06)')
+      .attr('stroke-width', 0.6);
 
     // Tierras (clipped)
     const landG = svg.append('g').attr('clip-path', 'url(#sphereClip)');
     const landPaths = landG.selectAll('path')
       .data(CONTINENTS.features)
       .enter().append('path')
-      .attr('fill', d => landColors[d.properties.name] || '#5a9644')
-      .attr('stroke', 'rgba(0,0,0,0.18)')
-      .attr('stroke-width', 0.4)
+      .attr('fill', d => landColors[d.properties.name] || '#4e8a3a')
+      .attr('stroke', 'rgba(0,0,0,0.22)')
+      .attr('stroke-width', 0.5)
       .attr('stroke-linejoin', 'round');
-
-    // Sombra nocturna (clipped)
-    svg.append('circle')
-      .attr('cx', CX).attr('cy', CY)
-      .attr('r', radius)
-      .attr('clip-path', 'url(#sphereClip)')
-      .attr('fill', 'url(#shadowGrad)');
-
-    // Destello solar (clipped)
-    svg.append('circle')
-      .attr('cx', CX).attr('cy', CY)
-      .attr('r', radius)
-      .attr('clip-path', 'url(#sphereClip)')
-      .attr('fill', 'url(#glareGrad)');
-
-    // Borde de esfera
-    svg.append('circle')
-      .attr('cx', CX).attr('cy', CY)
-      .attr('r', radius)
-      .attr('fill', 'none')
-      .attr('stroke', 'rgba(80,160,255,0.25)')
-      .attr('stroke-width', 1.5);
 
     // Animación de rotación
     let rotation = [0, -20, 0];
