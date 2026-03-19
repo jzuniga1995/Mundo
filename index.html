@@ -38,6 +38,7 @@
   <section class="site-hero">
     <div class="hero-stars"></div>
     <div class="hero-layout">
+
       <div class="hero-text">
         <span class="hero-eyebrow">Desde el principio hasta hoy</span>
         <h1 class="hero-title">La historia <em>completa</em><br>del universo</h1>
@@ -49,9 +50,10 @@
           Explorar articulos
         </button>
       </div>
-      <div class="hero-earth-wrapper" id="earthWrapper">
-        <canvas id="earthCanvas"></canvas>
-      </div>
+
+      <!-- Globe container — globe.gl lo llena automaticamente -->
+      <div class="hero-earth-wrapper" id="globeContainer"></div>
+
     </div>
     <div class="hero-bottom-fade"></div>
     <div class="hero-scroll">
@@ -78,10 +80,9 @@
     </div>
   </div>
 
-  <!-- ARTICLES SECTION WITH TABS -->
-  <section id="articulos" style="padding-top: 1rem;">
+  <!-- ARTICLES WITH TABS -->
+  <section id="articulos" style="padding-top:1rem;">
 
-    <!-- Search bar -->
     <div class="search-bar-wrapper">
       <div class="search-box">
         <span class="search-icon">&#9906;</span>
@@ -89,7 +90,6 @@
       </div>
     </div>
 
-    <!-- Category tabs -->
     <div class="tabs-wrapper">
       <div class="tabs" id="tabs">
         <button class="tab active" data-cat="Todos">Todos</button>
@@ -102,15 +102,12 @@
       </div>
     </div>
 
-    <!-- Results info -->
     <div class="results-info" id="resultsInfo"></div>
 
-    <!-- Grid -->
     <main class="articles-grid" id="articlesGrid">
       <div class="loading">Cargando articulos...</div>
     </main>
 
-    <!-- Pagination -->
     <nav class="pagination" id="pagination"></nav>
 
   </section>
@@ -120,192 +117,51 @@
     <p>Cronicas Cosmicas &mdash; Una enciclopedia del universo en español</p>
   </footer>
 
-  <!-- THREE.JS EARTH — procedural, sin URLs externas -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- GLOBE.GL -->
+  <script src="https://unpkg.com/globe.gl@2.27.2/dist/globe.gl.min.js"></script>
   <script>
   (function () {
-    const wrapper = document.getElementById('earthWrapper');
-    const canvas  = document.getElementById('earthCanvas');
-    if (!wrapper || !canvas) return;
+    const container = document.getElementById('globeContainer');
+    if (!container) return;
 
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setClearColor(0x000000, 0);
+    const size = container.clientWidth || 380;
 
-    const scene  = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
-    camera.position.z = 2.5;
+    const globe = Globe()
+      .width(size)
+      .height(size)
+      .backgroundColor('rgba(0,0,0,0)')
+      .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg')
+      .bumpImageUrl('https://unpkg.com/three-globe/example/img/earth-topology.png')
+      .atmosphereColor('rgba(100,160,255,0.3)')
+      .atmosphereAltitude(0.18)
+      (container);
 
-    function resize() {
-      const s = Math.round(wrapper.clientWidth);
-      if (s === 0) return;
-      renderer.setSize(s, s, false);
-      camera.updateProjectionMatrix();
-    }
-    resize();
-    window.addEventListener('resize', () => { setTimeout(resize, 100); });
+    // Auto rotate
+    globe.controls().autoRotate = true;
+    globe.controls().autoRotateSpeed = 0.7;
+    globe.controls().enableZoom = false;
+    globe.controls().enablePan = false;
+    globe.controls().enableRotate = false;
 
-    /* ── Textura procedural de la Tierra ── */
-    function makeEarthCanvas(sz) {
-      const c = document.createElement('canvas');
-      c.width = c.height = sz;
-      const x = c.getContext('2d');
-
-      // Oceano
-      const og = x.createLinearGradient(0, 0, 0, sz);
-      og.addColorStop(0,   '#1155a0');
-      og.addColorStop(0.4, '#1a6fc0');
-      og.addColorStop(0.6, '#1a7acc');
-      og.addColorStop(1,   '#0d3a70');
-      x.fillStyle = og;
-      x.fillRect(0, 0, sz, sz);
-
-      // Helper: pintar masa de tierra
-      const s = sz;
-      function blob(cx, cy, rx, ry, color, angle) {
-        x.save();
-        x.fillStyle = color;
-        x.beginPath();
-        x.ellipse(cx*s, cy*s, rx*s, ry*s, angle||0, 0, Math.PI*2);
-        x.fill();
-        x.restore();
+    // Responsive resize
+    window.addEventListener('resize', () => {
+      const s = container.clientWidth;
+      if (s > 0) {
+        globe.width(s).height(s);
       }
-      function poly(pts, color) {
-        x.save();
-        x.fillStyle = color;
-        x.beginPath();
-        x.moveTo(pts[0][0]*s, pts[0][1]*s);
-        for(let i=1;i<pts.length;i++) x.lineTo(pts[i][0]*s, pts[i][1]*s);
-        x.closePath();
-        x.fill();
-        x.restore();
-      }
-
-      const land1 = '#3a8c3a'; // verde bosque
-      const land2 = '#5aaa4a'; // verde claro
-      const land3 = '#c8a060'; // desierto
-      const land4 = '#8aaa5a'; // sabana
-      const ice   = '#ddeeff'; // hielo
-
-      // America del Norte
-      poly([[0.05,0.18],[0.22,0.14],[0.30,0.20],[0.28,0.38],[0.20,0.48],[0.12,0.50],[0.06,0.40],[0.04,0.28]], land2);
-      blob(0.15, 0.22, 0.07, 0.05, land1, -0.3);
-
-      // America Central / Mexico
-      poly([[0.14,0.48],[0.20,0.46],[0.22,0.54],[0.18,0.58],[0.13,0.56]], land3);
-
-      // America del Sur
-      poly([[0.18,0.56],[0.26,0.54],[0.30,0.62],[0.28,0.76],[0.22,0.82],[0.16,0.78],[0.14,0.66]], land2);
-      blob(0.22, 0.62, 0.06, 0.08, land1, 0.1);
-
-      // Europa
-      poly([[0.46,0.18],[0.58,0.16],[0.62,0.24],[0.58,0.32],[0.48,0.34],[0.44,0.26]], land2);
-      blob(0.52, 0.22, 0.04, 0.05, land1, 0);
-
-      // Africa
-      poly([[0.48,0.36],[0.58,0.34],[0.64,0.42],[0.62,0.62],[0.54,0.72],[0.46,0.68],[0.44,0.54],[0.46,0.42]], land3);
-      blob(0.52, 0.44, 0.05, 0.06, land1, 0.2); // jungla central
-      blob(0.56, 0.58, 0.04, 0.05, land4, 0);
-
-      // Asia
-      poly([[0.58,0.16],[0.86,0.14],[0.90,0.28],[0.84,0.42],[0.70,0.46],[0.60,0.40],[0.56,0.28]], land2);
-      blob(0.72, 0.22, 0.08, 0.05, land1, -0.2); // siberia
-      blob(0.76, 0.34, 0.06, 0.06, land3, 0);    // desierto gobi
-
-      // India
-      poly([[0.68,0.40],[0.76,0.40],[0.74,0.54],[0.68,0.56],[0.64,0.48]], land4);
-
-      // Sureste asiatico
-      blob(0.82, 0.46, 0.04, 0.04, land1, 0.3);
-      blob(0.88, 0.50, 0.03, 0.03, land1, 0);
-
-      // Australia
-      poly([[0.78,0.62],[0.90,0.60],[0.94,0.70],[0.90,0.78],[0.80,0.78],[0.76,0.70]], land3);
-      blob(0.82, 0.66, 0.04, 0.04, land4, 0.2);
-
-      // Groenlandia
-      blob(0.26, 0.12, 0.05, 0.04, ice, 0.3);
-
-      // Antartida
-      const ag = x.createLinearGradient(0, sz*0.88, 0, sz);
-      ag.addColorStop(0, 'rgba(220,235,255,0.7)');
-      ag.addColorStop(1, 'rgba(240,248,255,1)');
-      x.fillStyle = ag;
-      x.fillRect(0, sz*0.88, sz, sz*0.12);
-
-      // Polo norte (hielo artico)
-      const ng = x.createRadialGradient(sz*0.5, 0, 0, sz*0.5, 0, sz*0.18);
-      ng.addColorStop(0, 'rgba(220,235,255,0.9)');
-      ng.addColorStop(1, 'rgba(220,235,255,0)');
-      x.fillStyle = ng;
-      x.fillRect(0, 0, sz, sz*0.18);
-
-      // Nubes suaves
-      x.globalAlpha = 0.22;
-      x.fillStyle = '#ffffff';
-      function cloud(cx, cy, rw, rh) {
-        x.beginPath();
-        x.ellipse(cx*s, cy*s, rw*s, rh*s, 0, 0, Math.PI*2);
-        x.fill();
-      }
-      cloud(0.15, 0.30, 0.08, 0.02);
-      cloud(0.40, 0.25, 0.10, 0.018);
-      cloud(0.65, 0.55, 0.09, 0.022);
-      cloud(0.30, 0.65, 0.07, 0.018);
-      cloud(0.80, 0.20, 0.06, 0.015);
-      cloud(0.55, 0.80, 0.08, 0.02);
-      x.globalAlpha = 1;
-
-      return c;
-    }
-
-    const earthCanvas2D = makeEarthCanvas(1024);
-    const tex = new THREE.CanvasTexture(earthCanvas2D);
-
-    const mat = new THREE.MeshPhongMaterial({
-      map:       tex,
-      specular:  new THREE.Color(0x226688),
-      shininess: 20,
     });
-
-    const earth = new THREE.Mesh(new THREE.SphereGeometry(1, 80, 80), mat);
-    earth.rotation.x = 0.15;
-    scene.add(earth);
-
-    // Atmosfera
-    const atmosMat = new THREE.MeshPhongMaterial({
-      color: 0x55aaff, transparent: true, opacity: 0.07,
-      side: THREE.FrontSide, depthWrite: false,
-    });
-    scene.add(new THREE.Mesh(new THREE.SphereGeometry(1.016, 64, 64), atmosMat));
-
-    // Iluminacion — estilo Google Earth (brillante)
-    const sun = new THREE.DirectionalLight(0xffffff, 1.1);
-    sun.position.set(4, 2, 3);
-    scene.add(sun);
-    scene.add(new THREE.AmbientLight(0x8899cc, 1.0));
-    const fill = new THREE.DirectionalLight(0xaaccff, 0.2);
-    fill.position.set(-3, 0, 2);
-    scene.add(fill);
-
-    function animate() {
-      requestAnimationFrame(animate);
-      earth.rotation.y += 0.0010;
-      renderer.render(scene, camera);
-    }
-    animate();
   })();
   </script>
 
   <!-- ARTICLES JS -->
   <script>
     const CATEGORIAS = [
-      { label: 'Universo y Cosmología',    archivo: 'data/universo.json' },
-      { label: 'La Tierra y Geología',     archivo: 'data/tierra.json' },
-      { label: 'Evolución y Vida',         archivo: 'data/evolucion.json' },
-      { label: 'Civilizaciones Antiguas',  archivo: 'data/civilizaciones.json' },
-      { label: 'Historia Mundial',         archivo: 'data/historia.json' },
-      { label: 'Ciencia y Descubrimientos',archivo: 'data/ciencia.json' }
+      { label:'Universo y Cosmología',     archivo:'data/universo.json' },
+      { label:'La Tierra y Geología',      archivo:'data/tierra.json' },
+      { label:'Evolución y Vida',          archivo:'data/evolucion.json' },
+      { label:'Civilizaciones Antiguas',   archivo:'data/civilizaciones.json' },
+      { label:'Historia Mundial',          archivo:'data/historia.json' },
+      { label:'Ciencia y Descubrimientos', archivo:'data/ciencia.json' }
     ];
 
     const PER_PAGE = 9;
@@ -402,25 +258,24 @@
       return new Date(d).toLocaleDateString('es-ES', { year:'numeric', month:'long', day:'numeric' });
     }
 
-    // Tabs click
     document.getElementById('tabs').addEventListener('click', e => {
       if (!e.target.classList.contains('tab')) return;
       switchTab(e.target.dataset.cat);
     });
 
-    // Search
     document.getElementById('searchInput').addEventListener('input', e => {
       currentQ = e.target.value;
       applyFilters();
     });
 
-    // Header scroll + mobile nav
     window.addEventListener('scroll', () => {
       document.getElementById('siteHeader').classList.toggle('scrolled', window.scrollY > 60);
     });
+
     document.getElementById('navToggle').addEventListener('click', () => {
       document.getElementById('headerNav').classList.toggle('open');
     });
+
     document.getElementById('headerNav').addEventListener('click', e => {
       if (e.target.tagName === 'A') document.getElementById('headerNav').classList.remove('open');
     });
@@ -429,3 +284,5 @@
   </script>
 </body>
 </html>
+
+
