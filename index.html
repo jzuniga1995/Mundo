@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cronicas Cosmicas — La historia del universo desde el principio</title>
+  <meta name="description" content="Una enciclopedia cronológica del universo: desde el Big Bang hasta nuestros días, uniendo ciencia, historia y perspectiva bíblica en español.">
+  <meta name="robots" content="index, follow">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Cronicas Cosmicas">
+  <meta property="og:description" content="Una enciclopedia cronológica del universo desde el Big Bang hasta hoy.">
+  <meta property="og:locale" content="es_ES">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Cronicas Cosmicas",
+    "description": "Enciclopedia cronológica del universo desde el Big Bang hasta nuestros días",
+    "inLanguage": "es"
+  }
+  </script>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header" id="siteHeader">
+    <div class="header-inner">
+      <a href="index.html" class="site-logo">Cronicas<span>Cosmicas</span></a>
+      <nav>
+        <ul class="header-nav" id="headerNav">
+          <li><a href="#universo">Universo</a></li>
+          <li><a href="#tierra">Tierra</a></li>
+          <li><a href="#evolucion">Evolución</a></li>
+          <li><a href="#civilizaciones">Civilizaciones</a></li>
+          <li><a href="#todos">Ver todo</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="site-hero">
+    <div class="hero-stars"></div>
+    <div class="hero-layout">
+      <div class="hero-text">
+        <span class="hero-eyebrow">Desde el principio hasta hoy</span>
+        <h1 class="hero-title">La historia <em>completa</em><br>del universo</h1>
+        <p class="hero-description">
+          Una enciclopedia cronologica que une ciencia, historia y perspectiva biblica.
+          Desde el Big Bang hasta la inteligencia artificial.
+        </p>
+        <button class="hero-cta" onclick="document.getElementById('todos').scrollIntoView({behavior:'smooth'})">
+          Explorar articulos
+        </button>
+      </div>
+      <div class="hero-earth-wrapper" id="earthWrapper">
+        <canvas id="earthCanvas"></canvas>
+      </div>
+    </div>
+    <div class="hero-bottom-fade"></div>
+    <div class="hero-scroll">
+      <div class="hero-scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- STATS BAR -->
+  <div class="stats-bar">
+    <div class="stats-inner">
+      <div class="stat-item">
+        <span class="stat-number" id="totalArticulos">—</span>
+        <span class="stat-label">Articulos publicados</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">6</span>
+        <span class="stat-label">Categorias</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">13.8B</span>
+        <span class="stat-label">Anos de historia</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CATEGORY SECTIONS (preview 3 per category) -->
+  <div id="categorySections"></div>
+
+  <!-- ALL ARTICLES SECTION -->
+  <div id="todos" style="padding-top: 2rem;">
+    <div class="controls-bar">
+      <h2>Todos los articulos</h2>
+      <div class="controls-row">
+        <div class="search-box">
+          <span class="search-icon">&#9906;</span>
+          <input type="text" id="searchInput" placeholder="Buscar articulo..." autocomplete="off">
+        </div>
+        <div class="category-filters" id="categoryFilters">
+          <button class="filter-btn active" data-cat="Todos">Todos</button>
+          <button class="filter-btn" data-cat="Universo y Cosmología">Universo</button>
+          <button class="filter-btn" data-cat="La Tierra y Geología">Tierra</button>
+          <button class="filter-btn" data-cat="Evolución y Vida">Evolución</button>
+          <button class="filter-btn" data-cat="Civilizaciones Antiguas">Civilizaciones</button>
+          <button class="filter-btn" data-cat="Historia Mundial">Historia</button>
+          <button class="filter-btn" data-cat="Ciencia y Descubrimientos">Ciencia</button>
+        </div>
+      </div>
+    </div>
+    <div class="results-info" id="resultsInfo"></div>
+    <main class="articles-grid" id="articlesGrid">
+      <div class="loading">Cargando articulos...</div>
+    </main>
+    <nav class="pagination" id="pagination"></nav>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <p>Cronicas Cosmicas &mdash; Una enciclopedia del universo en español</p>
+  </footer>
+
+  <script>
+    // ── CONFIG: categorias y sus archivos JSON ──
+    const CATEGORIAS = [
+      { key: 'universo',       label: 'Universo y Cosmología',    archivo: 'data/universo.json',       ancla: 'universo' },
+      { key: 'tierra',         label: 'La Tierra y Geología',     archivo: 'data/tierra.json',         ancla: 'tierra' },
+      { key: 'evolucion',      label: 'Evolución y Vida',         archivo: 'data/evolucion.json',      ancla: 'evolucion' },
+      { key: 'civilizaciones', label: 'Civilizaciones Antiguas',  archivo: 'data/civilizaciones.json', ancla: 'civilizaciones' },
+      { key: 'historia',       label: 'Historia Mundial',         archivo: 'data/historia.json',       ancla: 'historia' },
+      { key: 'ciencia',        label: 'Ciencia y Descubrimientos',archivo: 'data/ciencia.json',        ancla: 'ciencia' }
+    ];
+
+    const ARTICLES_PER_PAGE = 9;
+    let allArticles = [];
+    let filteredArticles = [];
+    let currentPage = 1;
+    let currentCat = 'Todos';
+    let currentSearch = '';
+
+    // ── LOAD ALL DATA ──
+    async function loadAll() {
+      const promises = CATEGORIAS.map(c =>
+        fetch(c.archivo)
+          .then(r => r.json())
+          .catch(() => [])
+      );
+      const results = await Promise.all(promises);
+      allArticles = results.flat();
+
+      document.getElementById('totalArticulos').textContent = allArticles.length;
+
+      renderCategorySections(results);
+      applyFilters();
+    }
+
+    // ── RENDER CATEGORY PREVIEW SECTIONS ──
+    function renderCategorySections(results) {
+      const container = document.getElementById('categorySections');
+      container.innerHTML = CATEGORIAS.map((cat, i) => {
+        const articles = results[i];
+        if (!articles || articles.length === 0) return '';
+        const preview = articles.slice(0, 3);
+        return `
+          <section id="${cat.ancla}" class="categories-section" style="margin-bottom: 3rem;">
+            <div class="section-header">
+              <h2 class="section-title">${cat.label}</h2>
+              <span class="section-link" onclick="filterByCategory('${cat.label}')">Ver todos &rarr;</span>
+            </div>
+            <div class="articles-grid featured" style="padding: 0;">
+              ${preview.map(a => cardHTML(a)).join('')}
+            </div>
+          </section>
+        `;
+      }).join('');
+    }
+
+    // ── CARD HTML ──
+    function cardHTML(a) {
+      return `
+        <article class="article-card" onclick="goToArticle('${a.slug}')">
+          <div class="card-image-wrapper">
+            <img
+              class="card-image"
+              src="${a.imagen}"
+              alt="${a.imagen_alt}"
+              loading="lazy"
+              onerror="this.src='https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=800&q=60'"
+            >
+            <span class="card-category">${a.categoria}</span>
+          </div>
+          <div class="card-body">
+            <h2 class="card-title">${a.titulo}</h2>
+            <p class="card-excerpt">${a.descripcion}</p>
+            <div class="card-footer">
+              <span class="card-date">${formatDate(a.fecha)}</span>
+              <span class="card-read">Leer articulo</span>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    // ── FILTER & SEARCH ──
+    function applyFilters() {
+      const search = currentSearch.toLowerCase().trim();
+      filteredArticles = allArticles.filter(a => {
+        const matchCat = currentCat === 'Todos' || a.categoria === currentCat;
+        const matchSearch = !search ||
+          a.titulo.toLowerCase().includes(search) ||
+          a.descripcion.toLowerCase().includes(search) ||
+          a.categoria.toLowerCase().includes(search);
+        return matchCat && matchSearch;
+      });
+      currentPage = 1;
+      renderArticles();
+      renderPagination();
+      updateResultsInfo();
+    }
+
+    function filterByCategory(cat) {
+      currentCat = cat;
+      currentSearch = '';
+      document.getElementById('searchInput').value = '';
+      document.querySelectorAll('.filter-btn').forEach(b =>
+        b.classList.toggle('active', b.dataset.cat === cat)
+      );
+      applyFilters();
+      document.getElementById('todos').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // ── RENDER ARTICLES ──
+    function renderArticles() {
+      const grid = document.getElementById('articlesGrid');
+      const start = (currentPage - 1) * ARTICLES_PER_PAGE;
+      const pageArticles = filteredArticles.slice(start, start + ARTICLES_PER_PAGE);
+
+      if (pageArticles.length === 0) {
+        grid.innerHTML = '<div class="empty-state">No se encontraron articulos para esta busqueda.</div>';
+        return;
+      }
+      grid.innerHTML = pageArticles.map(a => cardHTML(a)).join('');
+    }
+
+    // ── PAGINATION ──
+    function renderPagination() {
+      const total = Math.ceil(filteredArticles.length / ARTICLES_PER_PAGE);
+      const nav = document.getElementById('pagination');
+      if (total <= 1) { nav.innerHTML = ''; return; }
+      let html = `<button class="page-btn" onclick="goPage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>&larr;</button>`;
+      for (let i = 1; i <= total; i++) {
+        if (total > 7 && i > 2 && i < total - 1 && Math.abs(i - currentPage) > 1) {
+          if (i === 3 || i === total - 2) html += `<span class="page-btn" style="border:none;cursor:default">...</span>`;
+          continue;
+        }
+        html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goPage(${i})">${i}</button>`;
+      }
+      html += `<button class="page-btn" onclick="goPage(${currentPage + 1})" ${currentPage === total ? 'disabled' : ''}>&rarr;</button>`;
+      nav.innerHTML = html;
+    }
+
+    function goPage(page) {
+      const total = Math.ceil(filteredArticles.length / ARTICLES_PER_PAGE);
+      if (page < 1 || page > total) return;
+      currentPage = page;
+      renderArticles();
+      renderPagination();
+      document.getElementById('todos').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function updateResultsInfo() {
+      document.getElementById('resultsInfo').textContent =
+        `${filteredArticles.length} articulo${filteredArticles.length !== 1 ? 's' : ''}`;
+    }
+
+    function goToArticle(slug) {
+      window.location.href = `articulo.html?slug=${slug}`;
+    }
+
+    function formatDate(dateStr) {
+      return new Date(dateStr).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+    }
+
+    // ── HEADER SCROLL + NAV TOGGLE ──
+    window.addEventListener('scroll', () => {
+      document.getElementById('siteHeader').classList.toggle('scrolled', window.scrollY > 60);
+    });
+    document.getElementById('navToggle').addEventListener('click', () => {
+      document.getElementById('headerNav').classList.toggle('open');
+    });
+    document.getElementById('headerNav').addEventListener('click', e => {
+      if (e.target.tagName === 'A') document.getElementById('headerNav').classList.remove('open');
+    });
+
+    // ── EVENT LISTENERS ──
+    document.getElementById('searchInput').addEventListener('input', e => {
+      currentSearch = e.target.value;
+      applyFilters();
+    });
+
+    document.getElementById('categoryFilters').addEventListener('click', e => {
+      if (!e.target.classList.contains('filter-btn')) return;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      e.target.classList.add('active');
+      currentCat = e.target.dataset.cat;
+      applyFilters();
+    });
+
+    // ── INIT ──
+    loadAll();
+  </script>
+  <!-- THREE.JS EARTH -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    (function() {
+      const wrapper = document.getElementById('earthWrapper');
+      const canvas  = document.getElementById('earthCanvas');
+
+      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setClearColor(0x000000, 0);
+
+      const scene  = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
+      camera.position.z = 2.5;
+
+      function resize() {
+        const w = wrapper.clientWidth;
+        const h = wrapper.clientHeight;
+        renderer.setSize(w, h, false);
+        camera.aspect = 1;
+        camera.updateProjectionMatrix();
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      const loader = new THREE.TextureLoader();
+      loader.crossOrigin = 'anonymous';
+
+      // Clean colorful day texture — no bump, Google Earth style
+      const earthTex = loader.load(
+        'https://unpkg.com/three@0.128.0/examples/textures/planets/earth_atmos_2048.jpg'
+      );
+      const specTex = loader.load(
+        'https://unpkg.com/three@0.128.0/examples/textures/planets/earth_specular_2048.jpg'
+      );
+
+      const mat = new THREE.MeshPhongMaterial({
+        map:        earthTex,
+        specularMap: specTex,
+        specular:   new THREE.Color(0x226688),
+        shininess:  25,
+        // No bumpMap — keeps it clean like Google Earth
+      });
+
+      const earth = new THREE.Mesh(new THREE.SphereGeometry(1, 80, 80), mat);
+      earth.rotation.x = 0.15;
+      scene.add(earth);
+
+      // Thin atmosphere rim
+      const atmosMat = new THREE.MeshPhongMaterial({
+        color:       0x55aaff,
+        transparent: true,
+        opacity:     0.07,
+        side:        THREE.FrontSide,
+        depthWrite:  false,
+      });
+      scene.add(new THREE.Mesh(new THREE.SphereGeometry(1.015, 64, 64), atmosMat));
+
+      // Cloud layer
+      const cloudTex = loader.load(
+        'https://unpkg.com/three@0.128.0/examples/textures/planets/earth_clouds_1024.png'
+      );
+      const cloudMat = new THREE.MeshPhongMaterial({
+        map:        cloudTex,
+        transparent: true,
+        opacity:    0.35,
+        depthWrite: false,
+      });
+      const clouds = new THREE.Mesh(new THREE.SphereGeometry(1.008, 64, 64), cloudMat);
+      scene.add(clouds);
+
+      // Lighting — bright like Google Earth
+      // Main sun from upper-left
+      const sun = new THREE.DirectionalLight(0xffffff, 1.2);
+      sun.position.set(4, 2, 3);
+      scene.add(sun);
+
+      // Strong ambient so the dark side is still visible (Google Earth style)
+      scene.add(new THREE.AmbientLight(0x8899bb, 0.8));
+
+      // Soft fill from the right
+      const fill = new THREE.DirectionalLight(0xaaccff, 0.25);
+      fill.position.set(-3, 0, 2);
+      scene.add(fill);
+
+      function animate() {
+        requestAnimationFrame(animate);
+        earth.rotation.y  += 0.0010;
+        clouds.rotation.y += 0.0012;
+        renderer.render(scene, camera);
+      }
+      animate();
+    })();
+  </script>
+</body>
+</html>
+
