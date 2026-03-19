@@ -1,0 +1,13 @@
+[
+  {
+    "id": 501,
+    "slug": "newton-y-la-ley-de-gravedad",
+    "titulo": "Newton y la gravedad: cómo una manzana cambió la comprensión del universo",
+    "categoria": "Ciencia y Descubrimientos",
+    "fecha": "2024-01-08",
+    "descripcion": "En 1687, Isaac Newton publicó los Principia Mathematica y unificó en una sola ecuación el movimiento de los planetas, la caída de una manzana y el flujo de las mareas.",
+    "imagen": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&q=80",
+    "imagen_alt": "Manzana cayendo representando la ley de gravedad",
+    "contenido": "<h2>El hombre que explicó el cosmos</h2><p>Isaac Newton tenía 23 años cuando, huyendo de la peste bubónica en Cambridge, regresó a su granja en Woolsthorpe. En esos dos años de aislamiento, entre 1665 y 1667, desarrolló el cálculo diferencial, descubrió que la luz blanca contiene todos los colores y formuló la ley de la gravedad universal.</p><h2>La ley que lo unificó todo</h2><p>La intuición de Newton fue radical: la misma fuerza que hace caer una manzana es la que mantiene a la Luna en órbita alrededor de la Tierra y a la Tierra en órbita alrededor del Sol. Una sola ecuación describía el comportamiento de todo el universo visible.</p><h2>Fe y ciencia en Newton</h2><p>Newton era profundamente religioso. Escribió más sobre teología que sobre física y creía que sus descubrimientos revelaban el orden racional que Dios había impuesto al universo. Para él, estudiar la naturaleza era estudiar la mente de Dios.</p>"
+  }
+]
