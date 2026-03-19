@@ -1,0 +1,24 @@
+[
+  {
+    "id": 201,
+    "slug": "insectos-gigantes-carbonifero",
+    "titulo": "Cuando los insectos eran gigantes: el Carbonífero y sus criaturas imposibles",
+    "categoria": "Evolución y Vida",
+    "fecha": "2024-01-04",
+    "descripcion": "Hace 300 millones de años, libélulas del tamaño de águilas sobrevolaban bosques de helechos de 30 metros. ¿Por qué eran tan grandes y por qué dejaron de serlo?",
+    "imagen": "https://images.unsplash.com/photo-1550159930-40066082a4fc?w=1200&q=80",
+    "imagen_alt": "Bosque denso representando los bosques primitivos del Carbonífero",
+    "contenido": "<h2>Un mundo de oxígeno</h2><p>El período Carbonífero abarcó desde hace 359 hasta 299 millones de años. Los bosques de helechos arborescentes cubrían los continentes y produjeron algo que cambiaría el mundo: oxígeno en cantidades nunca vistas. El nivel llegó al 35%, comparado con el 21% actual. Ese exceso de oxígeno hizo crecer a los insectos.</p><h2>Las criaturas del Carbonífero</h2><p>Meganeura, una libélula primitiva, tenía una envergadura de 70 centímetros. Arthropleura era un miriápodo que alcanzaba los 2,5 metros de largo — el artrópodo terrestre más grande que ha existido jamás.</p><h2>Por qué desaparecieron los gigantes</h2><p>Al final del Carbonífero, el clima cambió, el oxígeno cayó y los reptiles comenzaron a competir con los insectos gigantes. Sin el exceso de oxígeno y con nueva competencia, el gigantismo se volvió inviable.</p>"
+  },
+  {
+    "id": 202,
+    "slug": "extincion-dinosaurios-meteorito-chicxulub",
+    "titulo": "El día que terminó el mundo de los dinosaurios",
+    "categoria": "Evolución y Vida",
+    "fecha": "2024-01-05",
+    "descripcion": "Hace 66 millones de años, un asteroide de 12 kilómetros chocó contra la Tierra. En cuestión de horas, el mundo cambió para siempre.",
+    "imagen": "https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?w=1200&q=80",
+    "imagen_alt": "Cielo dramático representando un impacto cósmico",
+    "contenido": "<h2>El impacto</h2><p>Un asteroide de entre 10 y 15 kilómetros entró a la atmósfera a 20 kilómetros por segundo. El impacto liberó energía equivalente a mil millones de bombas nucleares. El cráter de Chicxulub, en Yucatán, tiene 180 kilómetros de diámetro.</p><h2>El invierno nuclear del Cretácico</h2><p>El polvo y el hollín bloquearon la luz solar durante meses. Las plantas murieron. Los herbívoros murieron. Los carnívoros murieron. El 75% de todas las especies del planeta se extinguió.</p><h2>Los sobrevivientes</h2><p>Lo que sobrevivió fueron los organismos pequeños: mamíferos nocturnos capaces de comer casi cualquier cosa. Sin el impacto de Chicxulub, los mamíferos habrían permanecido pequeños durante decenas de millones de años más. En 66 millones de años, produjeron a los seres humanos.</p>"
+  }
+]

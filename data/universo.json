@@ -1,0 +1,24 @@
+[
+  {
+    "id": 1,
+    "slug": "el-big-bang-el-instante-en-que-todo-comenzo",
+    "titulo": "El Big Bang: el instante en que todo comenzó",
+    "categoria": "Universo y Cosmología",
+    "fecha": "2024-01-01",
+    "descripcion": "Hace 13.800 millones de años no existía nada — ni espacio, ni tiempo, ni oscuridad. Y entonces, en una fracción de segundo, todo lo que existe explotó hacia la existencia.",
+    "imagen": "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=1200&q=80",
+    "imagen_alt": "Nebulosa colorida representando los orígenes del universo",
+    "contenido": "<h2>El momento cero</h2><p>La física moderna tiene un límite llamado el Tiempo de Planck: 10⁻⁴³ segundos después del inicio. Antes de ese instante, las leyes del universo que conocemos simplemente no funcionan. Los físicos llaman a ese punto una singularidad — el borde donde nuestra matemática deja de describir la realidad.</p><h2>Los primeros tres minutos</h2><p>En los primeros tres minutos ocurrió algo extraordinario. La temperatura bajó lo suficiente para que los quarks se unieran formando protones y neutrones, creando los primeros núcleos atómicos: hidrógeno, helio y pequeñas trazas de litio. Todo lo demás — el carbono de tus células, el hierro de tu sangre — fue fabricado después en el interior de estrellas que explotaron como supernovas. Literalmente eres polvo de estrellas muertas.</p><h2>Lo que dice el Génesis</h2><blockquote>«En el principio creó Dios los cielos y la tierra. Y la tierra estaba sin orden y vacía.» — Génesis 1:1-2</blockquote><p>Lo interesante no es la coincidencia superficial con el Big Bang, sino la estructura filosófica: hay un momento inaugural, un antes sin descripción posible, y una transición del caos al orden.</p>"
+  },
+  {
+    "id": 2,
+    "slug": "que-habia-antes-del-big-bang",
+    "titulo": "¿Qué había antes del Big Bang? Lo que la ciencia no puede responder sola",
+    "categoria": "Universo y Cosmología",
+    "fecha": "2024-01-02",
+    "descripcion": "La pregunta más honesta de la física: si el universo tuvo un origen, ¿qué existía antes? Las respuestas son tan radicales que la frontera entre ciencia y filosofía desaparece.",
+    "imagen": "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=1200&q=80",
+    "imagen_alt": "Espacio profundo con galaxias distantes",
+    "contenido": "<h2>El problema del antes</h2><p>Preguntar qué había antes del Big Bang es, según muchos físicos, un error gramatical disfrazado de pregunta filosófica. Si el tiempo mismo comenzó con el Big Bang, entonces la palabra «antes» carece de significado.</p><h2>Las hipótesis científicas</h2><p>La cosmología moderna ofrece varias respuestas. La hipótesis del multiverso eterno propone que nuestro universo es una burbuja que brotó de un espacio mayor. La teoría del universo cíclico de Roger Penrose sugiere que el Big Bang fue el punto final de un universo anterior. El modelo sin frontera de Hawking propone que el tiempo, cerca del inicio, se comporta como una dimensión espacial.</p><h2>La perspectiva teológica</h2><blockquote>«En el principio era el Verbo, y el Verbo era con Dios, y el Verbo era Dios.» — Juan 1:1</blockquote><p>San Agustín escribió en el siglo V que Dios no creó el universo «en el tiempo» sino que creó el tiempo junto con el universo. Esa intuición teológica de hace 1.600 años es sorprendentemente consistente con lo que la física moderna describe.</p>"
+  }
+]
