@@ -41,7 +41,6 @@
 
     <div class="hero-layout">
 
-      <!-- TEXT -->
       <div class="hero-text">
         <span class="hero-eyebrow">Desde el principio hasta hoy</span>
         <h1 class="hero-title">La historia <em>completa</em><br>del universo</h1>
@@ -54,9 +53,10 @@
         </button>
       </div>
 
-      <!-- GLOBE globe.gl — versión que funcionó -->
       <div class="hero-globe-side">
-        <div class="globe-wrapper" id="globeContainer"></div>
+        <div class="globe-wrapper">
+          <canvas id="globe-canvas"></canvas>
+        </div>
       </div>
 
     </div>
@@ -86,16 +86,14 @@
     </div>
   </div>
 
-  <!-- ARTICLES WITH TABS -->
-  <section id="articulos" style="padding-top: 0.5rem;">
-
+  <!-- ARTICLES -->
+  <section id="articulos" style="padding-top:0.5rem;">
     <div class="search-bar-wrapper">
       <div class="search-box">
         <span class="search-icon">&#9906;</span>
         <input type="text" id="searchInput" placeholder="Buscar en todos los articulos..." autocomplete="off">
       </div>
     </div>
-
     <div class="tabs-wrapper">
       <div class="tabs" id="tabs">
         <button class="tab active" data-cat="Todos">Todos</button>
@@ -107,15 +105,11 @@
         <button class="tab" data-cat="Ciencia y Descubrimientos">Ciencia y Descubrimientos</button>
       </div>
     </div>
-
     <div class="results-info" id="resultsInfo"></div>
-
     <main class="articles-grid" id="articlesGrid">
       <div class="loading">Cargando articulos...</div>
     </main>
-
     <nav class="pagination" id="pagination"></nav>
-
   </section>
 
   <!-- FOOTER -->
@@ -123,175 +117,261 @@
     <p>Cronicas Cosmicas &mdash; Una enciclopedia del universo en español</p>
   </footer>
 
-  <!-- D3 v7 desde cdnjs -->
+  <!-- D3 v7 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
 
-  <!-- GLOBE.GL — exactamente como funcionó -->
-<script src="js/globe.gl.min.js"></script>
+  <!-- GLOBO D3 CANVAS -->
   <script>
-  (function () {
-    var container = document.getElementById('globeContainer');
-    if (!container) return;
+  (function() {
+    var canvas = document.getElementById('globe-canvas');
+    var ctx    = canvas.getContext('2d');
 
-    var size = container.clientWidth || 420;
+    // Tamaño: igual al wrapper en CSS pixels. Sin DPR. Sin transforms acumulados.
+    function setSize() {
+      var s = canvas.parentElement.clientWidth;
+      canvas.width  = s;
+      canvas.height = s;
+    }
+    setSize();
+    window.addEventListener('resize', setSize);
 
-    var globe = Globe()
-      .width(size)
-      .height(size)
-      .backgroundColor('rgba(0,0,0,0)')
-      .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg')
-      .bumpImageUrl('https://unpkg.com/three-globe/example/img/earth-topology.png')
-      .atmosphereColor('rgba(100,160,255,0.3)')
-      .atmosphereAltitude(0.18)
-      (container);
+    // Continentes como GeoJSON embebido — sin fetch, sin red
+    var geo = {type:'FeatureCollection',features:[
+      // América del Norte
+      {type:'Feature',properties:{c:'#4e8c3a'},geometry:{type:'Polygon',coordinates:[[
+        [-168,72],[-140,72],[-120,78],[-85,83],[-65,83],[-55,72],[-52,60],
+        [-55,46],[-66,44],[-70,42],[-75,36],[-80,30],[-88,20],[-85,12],
+        [-78,8],[-77,8],[-80,10],[-84,14],[-90,16],[-92,18],[-97,22],
+        [-106,24],[-110,28],[-116,30],[-122,36],[-124,40],[-124,46],
+        [-130,54],[-140,56],[-148,60],[-152,58],[-160,54],[-168,60],[-168,72]
+      ]]}},
+      // América del Sur
+      {type:'Feature',properties:{c:'#447c31'},geometry:{type:'Polygon',coordinates:[[
+        [-78,10],[-76,8],[-62,10],[-60,6],[-50,2],[-48,-4],[-35,-8],
+        [-34,-14],[-36,-18],[-40,-20],[-42,-24],[-50,-28],[-52,-34],
+        [-54,-38],[-58,-40],[-62,-42],[-66,-46],[-66,-52],[-68,-56],
+        [-70,-52],[-72,-46],[-70,-42],[-72,-36],[-72,-30],[-70,-22],
+        [-68,-18],[-70,-14],[-76,-8],[-80,-4],[-80,0],[-78,6],[-78,10]
+      ]]}},
+      // Europa
+      {type:'Feature',properties:{c:'#529141'},geometry:{type:'Polygon',coordinates:[[
+        [-10,36],[0,36],[4,42],[8,44],[14,46],[20,48],[26,50],[28,56],
+        [26,60],[20,62],[14,66],[20,70],[28,72],[30,68],[36,64],[34,58],
+        [28,52],[24,48],[28,44],[34,42],[36,40],[28,40],[22,38],[16,38],
+        [10,42],[4,44],[-2,44],[-8,44],[-10,38],[-10,36]
+      ]]}},
+      // África
+      {type:'Feature',properties:{c:'#c09640'},geometry:{type:'Polygon',coordinates:[[
+        [-18,14],[-14,10],[-12,6],[-8,4],[-4,4],[0,6],[6,4],[10,2],
+        [14,2],[16,4],[20,4],[24,2],[30,0],[34,-2],[38,-2],[40,4],
+        [44,8],[44,12],[42,16],[42,22],[36,24],[32,26],[30,30],[32,36],
+        [36,38],[34,36],[28,36],[24,34],[16,32],[12,34],[10,36],[8,38],
+        [4,38],[0,34],[-4,32],[-8,28],[-14,22],[-18,18],[-18,14]
+      ]]}},
+      // Asia
+      {type:'Feature',properties:{c:'#467e36'},geometry:{type:'Polygon',coordinates:[[
+        [36,40],[40,38],[44,40],[50,40],[54,42],[60,42],[66,40],[72,36],
+        [76,34],[80,30],[84,26],[88,24],[92,22],[96,18],[100,14],[104,10],
+        [108,12],[112,16],[116,20],[120,22],[124,24],[126,28],[128,34],
+        [130,40],[132,46],[134,50],[136,54],[132,58],[128,62],[124,64],
+        [118,68],[110,70],[100,72],[90,74],[80,74],[70,72],[60,70],
+        [50,70],[44,68],[38,64],[34,60],[30,56],[28,52],[34,50],[36,46],[36,40]
+      ]]}},
+      // Oceanía
+      {type:'Feature',properties:{c:'#6aaa48'},geometry:{type:'Polygon',coordinates:[[
+        [114,-22],[118,-18],[122,-18],[128,-14],[132,-12],[136,-14],
+        [138,-18],[140,-22],[142,-26],[144,-28],[148,-24],[152,-24],
+        [154,-28],[152,-34],[148,-38],[144,-38],[140,-34],[136,-30],
+        [132,-28],[128,-26],[122,-24],[118,-22],[114,-22]
+      ]]}},
+      // Groenlandia
+      {type:'Feature',properties:{c:'#c8dde8'},geometry:{type:'Polygon',coordinates:[[
+        [-44,60],[-36,64],[-24,70],[-20,76],[-26,80],
+        [-34,84],[-44,84],[-52,80],[-56,74],[-52,68],[-44,60]
+      ]]}},
+      // Antártida
+      {type:'Feature',properties:{c:'#daeaf4'},geometry:{type:'Polygon',coordinates:[[
+        [0,-70],[60,-72],[120,-70],[180,-68],[180,-90],[0,-90],[0,-70]
+      ]]}}
+    ]};
 
-    globe.controls().autoRotate      = true;
-    globe.controls().autoRotateSpeed = 0.7;
-    globe.controls().enableZoom      = false;
-    globe.controls().enablePan       = false;
-    globe.controls().enableRotate    = false;
+    var SPHERE    = {type:'Sphere'};
+    var graticule = d3.geoGraticule()();
+    var yaw       = 0;
+    var lastTs    = null;
 
-    window.addEventListener('resize', function () {
-      var s = container.clientWidth;
-      if (s > 0) globe.width(s).height(s);
-    });
+    function draw(ts) {
+      if (!lastTs) lastTs = ts;
+      yaw += (ts - lastTs) / 1000 * 7;
+      lastTs = ts;
+
+      var W  = canvas.width;
+      var R  = W / 2 - 2;
+      var cx = W / 2;
+      var cy = W / 2;
+
+      var proj = d3.geoOrthographic()
+        .scale(R)
+        .translate([cx, cy])
+        .clipAngle(90)
+        .rotate([yaw, -20, 0]);
+
+      var path = d3.geoPath().projection(proj).context(ctx);
+
+      ctx.clearRect(0, 0, W, W);
+
+      // Océano
+      var oc = ctx.createRadialGradient(cx - R*0.22, cy - R*0.22, 0, cx, cy, R);
+      oc.addColorStop(0,   '#2282c0');
+      oc.addColorStop(0.5, '#0d4878');
+      oc.addColorStop(1,   '#030e1c');
+      ctx.beginPath(); path(SPHERE);
+      ctx.fillStyle = oc; ctx.fill();
+
+      // Graticule
+      ctx.beginPath(); path(graticule);
+      ctx.strokeStyle = 'rgba(255,255,255,0.07)';
+      ctx.lineWidth   = 0.5;
+      ctx.stroke();
+
+      // Continentes
+      geo.features.forEach(function(f) {
+        ctx.beginPath(); path(f);
+        ctx.fillStyle   = f.properties.c; ctx.fill();
+        ctx.strokeStyle = 'rgba(0,0,0,0.18)';
+        ctx.lineWidth   = 0.4; ctx.stroke();
+      });
+
+      // Sombra nocturna
+      var sh = ctx.createLinearGradient(cx - R*0.1, cy, cx + R, cy);
+      sh.addColorStop(0,   'rgba(0,0,0,0)');
+      sh.addColorStop(0.5, 'rgba(0,4,18,0.28)');
+      sh.addColorStop(1,   'rgba(0,3,14,0.82)');
+      ctx.beginPath(); path(SPHERE);
+      ctx.fillStyle = sh; ctx.fill();
+
+      // Destello solar
+      var gx = cx - R*0.3, gy = cy - R*0.32;
+      var gl = ctx.createRadialGradient(gx, gy, 0, gx, gy, R*0.35);
+      gl.addColorStop(0,   'rgba(255,255,255,0.10)');
+      gl.addColorStop(0.6, 'rgba(255,255,255,0.02)');
+      gl.addColorStop(1,   'rgba(255,255,255,0)');
+      ctx.beginPath(); path(SPHERE);
+      ctx.fillStyle = gl; ctx.fill();
+
+      // Borde
+      ctx.beginPath(); path(SPHERE);
+      ctx.strokeStyle = 'rgba(80,160,255,0.22)';
+      ctx.lineWidth   = 1.5; ctx.stroke();
+
+      requestAnimationFrame(draw);
+    }
+
+    requestAnimationFrame(draw);
   })();
   </script>
 
-
   <!-- ARTICLES JS -->
   <script>
-    const CATEGORIAS = [
-      { label:'Universo y Cosmología',     archivo:'data/universo.json' },
-      { label:'La Tierra y Geología',      archivo:'data/tierra.json' },
-      { label:'Evolución y Vida',          archivo:'data/evolucion.json' },
-      { label:'Civilizaciones Antiguas',   archivo:'data/civilizaciones.json' },
-      { label:'Historia Mundial',          archivo:'data/historia.json' },
-      { label:'Ciencia y Descubrimientos', archivo:'data/ciencia.json' }
+    var CATEGORIAS = [
+      {label:'Universo y Cosmología',     archivo:'data/universo.json'},
+      {label:'La Tierra y Geología',      archivo:'data/tierra.json'},
+      {label:'Evolución y Vida',          archivo:'data/evolucion.json'},
+      {label:'Civilizaciones Antiguas',   archivo:'data/civilizaciones.json'},
+      {label:'Historia Mundial',          archivo:'data/historia.json'},
+      {label:'Ciencia y Descubrimientos', archivo:'data/ciencia.json'}
     ];
-
-    const PER_PAGE = 9;
-    let allArticles = [];
-    let filtered    = [];
-    let currentCat  = 'Todos';
-    let currentQ    = '';
-    let page        = 1;
+    var PER_PAGE=9, allArticles=[], filtered=[], currentCat='Todos', currentQ='', page=1;
 
     async function loadAll() {
-      const results = await Promise.all(
-        CATEGORIAS.map(c => fetch(c.archivo).then(r => r.json()).catch(() => []))
-      );
-      allArticles = results.flat();
+      var res = await Promise.all(CATEGORIAS.map(function(c){
+        return fetch(c.archivo).then(function(r){return r.json();}).catch(function(){return [];});
+      }));
+      allArticles = [].concat.apply([], res);
       document.getElementById('totalArticulos').textContent = allArticles.length;
       applyFilters();
     }
 
     function applyFilters() {
-      const q = currentQ.toLowerCase().trim();
-      filtered = allArticles.filter(a => {
-        const matchCat = currentCat === 'Todos' || a.categoria === currentCat;
-        const matchQ   = !q || a.titulo.toLowerCase().includes(q) || (a.descripcion && a.descripcion.toLowerCase().includes(q));
-        return matchCat && matchQ;
+      var q = currentQ.toLowerCase().trim();
+      filtered = allArticles.filter(function(a){
+        return (currentCat==='Todos' || a.categoria===currentCat) &&
+               (!q || a.titulo.toLowerCase().includes(q) || (a.descripcion&&a.descripcion.toLowerCase().includes(q)));
       });
-      page = 1;
-      render();
-      renderPagination();
-      const n = filtered.length;
-      document.getElementById('resultsInfo').textContent =
-        n + ' artículo' + (n !== 1 ? 's' : '');
+      page=1; render(); renderPagination();
+      var n=filtered.length;
+      document.getElementById('resultsInfo').textContent = n+' artículo'+(n!==1?'s':'');
     }
 
     function render() {
-      const grid  = document.getElementById('articlesGrid');
-      const start = (page - 1) * PER_PAGE;
-      const items = filtered.slice(start, start + PER_PAGE);
-      if (!items.length) {
-        grid.innerHTML = '<div class="empty-state">No se encontraron artículos.</div>';
-        return;
-      }
-      grid.innerHTML = items.map(a => `
-        <article class="article-card" onclick="location.href='articulo.html?slug=${a.slug}'">
-          <div class="card-image-wrapper">
-            <img class="card-image" src="${a.imagen}" alt="${a.imagen_alt || a.titulo}" loading="lazy"
-              onerror="this.src='https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=800&q=60'">
-            <span class="card-category">${a.categoria}</span>
-          </div>
-          <div class="card-body">
-            <h2 class="card-title">${a.titulo}</h2>
-            <p class="card-excerpt">${a.descripcion || ''}</p>
-            <div class="card-footer">
-              <span class="card-date">${fmt(a.fecha)}</span>
-              <span class="card-read">Leer artículo</span>
-            </div>
-          </div>
-        </article>
-      `).join('');
+      var grid=document.getElementById('articlesGrid');
+      var items=filtered.slice((page-1)*PER_PAGE, page*PER_PAGE);
+      if(!items.length){grid.innerHTML='<div class="empty-state">No se encontraron artículos.</div>';return;}
+      grid.innerHTML=items.map(function(a){
+        return '<article class="article-card" onclick="location.href=\'articulo.html?slug='+a.slug+'\'">'
+          +'<div class="card-image-wrapper">'
+          +'<img class="card-image" src="'+a.imagen+'" alt="'+(a.imagen_alt||a.titulo)+'" loading="lazy"'
+          +' onerror="this.src=\'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=800&q=60\'">'
+          +'<span class="card-category">'+a.categoria+'</span>'
+          +'</div><div class="card-body">'
+          +'<h2 class="card-title">'+a.titulo+'</h2>'
+          +'<p class="card-excerpt">'+(a.descripcion||'')+'</p>'
+          +'<div class="card-footer">'
+          +'<span class="card-date">'+fmt(a.fecha)+'</span>'
+          +'<span class="card-read">Leer artículo</span>'
+          +'</div></div></article>';
+      }).join('');
     }
 
     function renderPagination() {
-      const total = Math.ceil(filtered.length / PER_PAGE);
-      const nav   = document.getElementById('pagination');
-      if (total <= 1) { nav.innerHTML = ''; return; }
-      let h = `<button class="page-btn" onclick="goPage(${page-1})" ${page===1?'disabled':''}>&larr;</button>`;
-      for (let i = 1; i <= total; i++) {
-        if (total > 7 && i > 2 && i < total-1 && Math.abs(i-page) > 1) {
-          if (i===3 || i===total-2) h += `<span class="page-btn" style="border:none;cursor:default;pointer-events:none">…</span>`;
+      var total=Math.ceil(filtered.length/PER_PAGE);
+      var nav=document.getElementById('pagination');
+      if(total<=1){nav.innerHTML='';return;}
+      var h='<button class="page-btn" onclick="goPage('+(page-1)+')" '+(page===1?'disabled':'')+'>&larr;</button>';
+      for(var i=1;i<=total;i++){
+        if(total>7&&i>2&&i<total-1&&Math.abs(i-page)>1){
+          if(i===3||i===total-2)h+='<span class="page-btn" style="border:none;cursor:default">…</span>';
           continue;
         }
-        h += `<button class="page-btn ${i===page?'active':''}" onclick="goPage(${i})">${i}</button>`;
+        h+='<button class="page-btn '+(i===page?'active':'')+'" onclick="goPage('+i+')">'+i+'</button>';
       }
-      h += `<button class="page-btn" onclick="goPage(${page+1})" ${page===total?'disabled':''}>&rarr;</button>`;
-      nav.innerHTML = h;
+      h+='<button class="page-btn" onclick="goPage('+(page+1)+')" '+(page===total?'disabled':'')+'>&rarr;</button>';
+      nav.innerHTML=h;
     }
 
-    function goPage(p) {
-      const total = Math.ceil(filtered.length / PER_PAGE);
-      if (p < 1 || p > total) return;
-      page = p;
-      render();
-      renderPagination();
-      document.getElementById('articulos').scrollIntoView({ behavior: 'smooth' });
+    function goPage(p){
+      var total=Math.ceil(filtered.length/PER_PAGE);
+      if(p<1||p>total)return;
+      page=p; render(); renderPagination();
+      document.getElementById('articulos').scrollIntoView({behavior:'smooth'});
     }
 
-    function switchTab(cat) {
-      currentCat = cat;
-      document.querySelectorAll('.tab').forEach(b =>
-        b.classList.toggle('active', b.dataset.cat === cat)
-      );
+    function switchTab(cat){
+      currentCat=cat;
+      document.querySelectorAll('.tab').forEach(function(b){b.classList.toggle('active',b.dataset.cat===cat);});
       applyFilters();
     }
 
-    function fmt(d) {
-      if (!d) return '';
-      return new Date(d).toLocaleDateString('es-ES', { year:'numeric', month:'long', day:'numeric' });
+    function fmt(d){
+      if(!d)return '';
+      return new Date(d).toLocaleDateString('es-ES',{year:'numeric',month:'long',day:'numeric'});
     }
 
-    // Tab clicks
-    document.getElementById('tabs').addEventListener('click', e => {
-      if (!e.target.classList.contains('tab')) return;
-      switchTab(e.target.dataset.cat);
+    document.getElementById('tabs').addEventListener('click',function(e){
+      if(e.target.classList.contains('tab'))switchTab(e.target.dataset.cat);
     });
-
-    // Search
-    document.getElementById('searchInput').addEventListener('input', e => {
-      currentQ = e.target.value;
-      applyFilters();
+    document.getElementById('searchInput').addEventListener('input',function(e){
+      currentQ=e.target.value; applyFilters();
     });
-
-    // Header scroll
-    window.addEventListener('scroll', () => {
-      document.getElementById('siteHeader').classList.toggle('scrolled', window.scrollY > 60);
+    window.addEventListener('scroll',function(){
+      document.getElementById('siteHeader').classList.toggle('scrolled',window.scrollY>60);
     });
-
-    // Mobile nav toggle
-    document.getElementById('navToggle').addEventListener('click', () => {
+    document.getElementById('navToggle').addEventListener('click',function(){
       document.getElementById('headerNav').classList.toggle('open');
     });
-    document.getElementById('headerNav').addEventListener('click', e => {
-      if (e.target.tagName === 'A') document.getElementById('headerNav').classList.remove('open');
+    document.getElementById('headerNav').addEventListener('click',function(e){
+      if(e.target.tagName==='A')document.getElementById('headerNav').classList.remove('open');
     });
-
-    // Load articles
     loadAll();
   </script>
 
