@@ -125,15 +125,36 @@
     <p>Cronicas Cosmicas &mdash; Una enciclopedia del universo en español</p>
   </footer>
 
-  <!-- D3 v7 + TopoJSON -->
+  <!-- D3 v7 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
 
   <script>
   // ══════════════════════════════════════════
-  //  D3 ORTHOGRAPHIC GLOBE
+  //  D3 ORTHOGRAPHIC GLOBE — sin fetch externo
+  //  GeoJSON de continentes embebido
   // ══════════════════════════════════════════
   (function() {
+
+    // GeoJSON simplificado de continentes (embebido, cero dependencia de red)
+    const CONTINENTS = {"type":"FeatureCollection","features":[
+    // América del Norte
+    {"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-168,72],[-140,72],[-120,78],[-85,83],[-65,83],[-55,72],[-52,60],[-55,46],[-66,44],[-70,42],[-75,36],[-80,30],[-88,20],[-85,12],[-78,8],[-77,8],[-80,10],[-84,14],[-90,16],[-92,18],[-97,22],[-106,24],[-110,28],[-116,30],[-122,36],[-124,40],[-124,46],[-130,54],[-140,56],[-148,60],[-152,58],[-160,54],[-168,60],[-168,72]]]},"properties":{"name":"norteamerica"}},
+    // América del Sur
+    {"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-78,10],[-76,8],[-62,10],[-60,6],[-50,2],[-48,-4],[-35,-8],[-34,-14],[-36,-18],[-40,-20],[-42,-24],[-50,-28],[-52,-34],[-54,-38],[-58,-40],[-62,-42],[-66,-46],[-66,-52],[-68,-56],[-70,-52],[-72,-46],[-70,-42],[-72,-36],[-72,-30],[-70,-22],[-68,-18],[-70,-14],[-76,-8],[-80,-4],[-80,0],[-78,6],[-78,10]]]},"properties":{"name":"sudamerica"}},
+    // Europa
+    {"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-10,36],[0,36],[4,42],[8,44],[14,46],[20,48],[26,50],[28,56],[26,60],[20,62],[14,66],[20,70],[28,72],[30,68],[36,64],[34,58],[28,52],[24,48],[28,44],[34,42],[36,40],[28,40],[22,38],[16,38],[10,42],[4,44],[-2,44],[-8,44],[-10,38],[-10,36]]]},"properties":{"name":"europa"}},
+    // África
+    {"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-18,14],[-14,10],[-12,6],[-8,4],[-4,4],[0,6],[6,4],[10,2],[14,2],[16,4],[20,4],[24,2],[30,0],[34,-2],[38,-2],[40,4],[44,8],[44,12],[42,16],[42,22],[36,24],[32,26],[30,30],[32,36],[36,38],[34,36],[28,36],[24,34],[16,32],[12,34],[10,36],[8,38],[4,38],[0,34],[-4,32],[-8,28],[-14,22],[-18,18],[-18,14]]]},"properties":{"name":"africa"}},
+    // Asia
+    {"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[36,40],[40,38],[44,40],[50,40],[54,42],[60,42],[66,40],[72,36],[76,34],[80,30],[84,26],[88,24],[92,22],[96,18],[100,14],[104,10],[108,12],[112,16],[116,20],[120,22],[124,24],[126,28],[128,34],[130,40],[132,46],[134,50],[136,54],[132,58],[128,62],[124,64],[118,68],[110,70],[100,72],[90,74],[80,74],[70,72],[60,70],[50,70],[44,68],[38,64],[34,60],[30,56],[28,52],[34,50],[36,46],[36,40]]]},"properties":{"name":"asia"}},
+    // Oceanía
+    {"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[114,-22],[118,-18],[122,-18],[128,-14],[132,-12],[136,-14],[138,-18],[140,-22],[142,-26],[144,-28],[148,-24],[152,-24],[154,-28],[152,-34],[148,-38],[144,-38],[140,-34],[136,-30],[132,-28],[128,-26],[122,-24],[118,-22],[114,-22]]]},"properties":{"name":"oceania"}},
+    // Groenlandia
+    {"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-44,60],[-36,64],[-24,70],[-20,76],[-26,80],[-34,84],[-44,84],[-52,80],[-56,74],[-52,68],[-44,60]]]},"properties":{"name":"groenlandia"}},
+    // Antártida
+    {"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[0,-70],[60,-72],[120,-70],[180,-68],[180,-90],[0,-90],[0,-70]]]},"properties":{"name":"antartida"}}
+    ]};
+
     const svg    = d3.select('#globe-svg');
     const W      = 600;
     const CX     = W / 2;
@@ -147,74 +168,85 @@
       .rotate([0, -20, 0]);
 
     const path = d3.geoPath().projection(projection);
-
-    // Defs: ocean gradient + atmosphere gradient
     const defs = svg.append('defs');
 
-    // Ocean radial gradient (deep blue → lighter blue)
+    // Ocean gradient
     const oceanGrad = defs.append('radialGradient')
       .attr('id', 'oceanGrad')
-      .attr('cx', '38%').attr('cy', '35%')
-      .attr('r', '65%');
-    oceanGrad.append('stop').attr('offset', '0%').attr('stop-color', '#1a6ba0');
-    oceanGrad.append('stop').attr('offset', '40%').attr('stop-color', '#0e4d7a');
-    oceanGrad.append('stop').attr('offset', '100%').attr('stop-color', '#061e38');
+      .attr('cx', '38%').attr('cy', '35%').attr('r', '65%');
+    oceanGrad.append('stop').attr('offset', '0%').attr('stop-color', '#1e74ab');
+    oceanGrad.append('stop').attr('offset', '45%').attr('stop-color', '#0e4d7a');
+    oceanGrad.append('stop').attr('offset', '100%').attr('stop-color', '#051828');
 
-    // Atmosphere glow gradient
+    // Atmosphere glow
     const atmoGrad = defs.append('radialGradient')
       .attr('id', 'atmoGrad')
-      .attr('cx', '50%').attr('cy', '50%')
-      .attr('r', '50%');
-    atmoGrad.append('stop').attr('offset', '82%').attr('stop-color', 'transparent');
-    atmoGrad.append('stop').attr('offset', '94%').attr('stop-color', 'rgba(80,160,255,0.18)');
-    atmoGrad.append('stop').attr('offset', '100%').attr('stop-color', 'rgba(80,160,255,0.05)');
+      .attr('cx', '50%').attr('cy', '50%').attr('r', '50%');
+    atmoGrad.append('stop').attr('offset', '80%').attr('stop-color', 'transparent');
+    atmoGrad.append('stop').attr('offset', '93%').attr('stop-color', 'rgba(80,160,255,0.2)');
+    atmoGrad.append('stop').attr('offset', '100%').attr('stop-color', 'rgba(40,120,255,0.04)');
 
-    // Sphere highlight (top-left glare)
+    // Glare top-left
     const glareGrad = defs.append('radialGradient')
       .attr('id', 'glareGrad')
-      .attr('cx', '32%').attr('cy', '28%')
-      .attr('r', '48%');
-    glareGrad.append('stop').attr('offset', '0%').attr('stop-color', 'rgba(255,255,255,0.16)');
+      .attr('cx', '30%').attr('cy', '26%').attr('r', '46%');
+    glareGrad.append('stop').attr('offset', '0%').attr('stop-color', 'rgba(255,255,255,0.18)');
     glareGrad.append('stop').attr('offset', '100%').attr('stop-color', 'transparent');
 
-    // Clip path for the sphere
+    // Night shadow right side
+    const shadowGrad = defs.append('radialGradient')
+      .attr('id', 'shadowGrad')
+      .attr('cx', '75%').attr('cy', '50%').attr('r', '55%');
+    shadowGrad.append('stop').attr('offset', '0%').attr('stop-color', 'rgba(0,0,0,0)');
+    shadowGrad.append('stop').attr('offset', '55%').attr('stop-color', 'rgba(0,0,0,0)');
+    shadowGrad.append('stop').attr('offset', '100%').attr('stop-color', 'rgba(0,6,24,0.85)');
+
+    // Clip
     defs.append('clipPath').attr('id', 'sphereClip')
       .append('circle').attr('cx', CX).attr('cy', CY).attr('r', radius);
 
-    // Shadow on the right (night side)
-    const shadowGrad = defs.append('radialGradient')
-      .attr('id', 'shadowGrad')
-      .attr('cx', '72%').attr('cy', '50%')
-      .attr('r', '55%');
-    shadowGrad.append('stop').attr('offset', '0%').attr('stop-color', 'rgba(0,0,0,0)');
-    shadowGrad.append('stop').attr('offset', '60%').attr('stop-color', 'rgba(0,0,0,0)');
-    shadowGrad.append('stop').attr('offset', '100%').attr('stop-color', 'rgba(0,8,28,0.82)');
+    // Land colors by continent
+    const landColors = {
+      norteamerica: '#5a9644',
+      sudamerica:   '#4d8f3a',
+      europa:       '#5ea650',
+      africa:       '#c49a42',
+      asia:         '#4f9040',
+      oceania:      '#7ab856',
+      groenlandia:  '#d8e8f0',
+      antartida:    '#e2eef4'
+    };
 
-    // Atmosphere ring (slightly bigger)
+    // Atmosphere ring
     svg.append('circle')
       .attr('cx', CX).attr('cy', CY)
-      .attr('r', radius + 12)
+      .attr('r', radius + 14)
       .attr('fill', 'url(#atmoGrad)');
 
-    // Ocean fill
+    // Ocean
     svg.append('circle')
       .attr('cx', CX).attr('cy', CY)
       .attr('r', radius)
       .attr('fill', 'url(#oceanGrad)');
 
-    // Container for land paths (clipped)
-    const landGroup = svg.append('g').attr('clip-path', 'url(#sphereClip)');
-    const graticuleGroup = svg.append('g').attr('clip-path', 'url(#sphereClip)');
-    const borderGroup = svg.append('g').attr('clip-path', 'url(#sphereClip)');
-
-    // Graticule
-    const graticule = d3.geoGraticule()();
-    graticuleGroup.append('path')
-      .datum(graticule)
-      .attr('d', path)
+    // Graticule group (clipped)
+    const graticuleG = svg.append('g').attr('clip-path', 'url(#sphereClip)');
+    const grat = d3.geoGraticule()();
+    const gratPath = graticuleG.append('path')
+      .datum(grat)
       .attr('fill', 'none')
-      .attr('stroke', 'rgba(140,200,255,0.12)')
-      .attr('stroke-width', 0.6);
+      .attr('stroke', 'rgba(150,210,255,0.1)')
+      .attr('stroke-width', 0.5);
+
+    // Land group (clipped)
+    const landG = svg.append('g').attr('clip-path', 'url(#sphereClip)');
+    const landPaths = landG.selectAll('path')
+      .data(CONTINENTS.features)
+      .enter().append('path')
+      .attr('fill', d => landColors[d.properties.name] || '#5a9644')
+      .attr('stroke', 'rgba(0,0,0,0.2)')
+      .attr('stroke-width', 0.4)
+      .attr('stroke-linejoin', 'round');
 
     // Night shadow overlay
     svg.append('circle')
@@ -223,7 +255,7 @@
       .attr('fill', 'url(#shadowGrad)')
       .attr('clip-path', 'url(#sphereClip)');
 
-    // Sphere glare
+    // Glare
     svg.append('circle')
       .attr('cx', CX).attr('cy', CY)
       .attr('r', radius)
@@ -235,72 +267,25 @@
       .attr('cx', CX).attr('cy', CY)
       .attr('r', radius)
       .attr('fill', 'none')
-      .attr('stroke', 'rgba(80,160,255,0.25)')
+      .attr('stroke', 'rgba(80,160,255,0.28)')
       .attr('stroke-width', 1.5);
 
-    // Load world topojson
-    const TOPO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
+    // Animate
+    let rotation = [0, -20, 0];
+    let last = null;
 
-    d3.json(TOPO_URL).then(function(world) {
-      const land      = topojson.feature(world, world.objects.land);
-      const countries = topojson.feature(world, world.objects.countries);
-      const borders   = topojson.mesh(world, world.objects.countries, (a, b) => a !== b);
+    function tick(ts) {
+      if (!last) last = ts;
+      const dt = (ts - last) / 1000;
+      last = ts;
+      rotation[0] += 7 * dt;
+      projection.rotate(rotation);
+      landPaths.attr('d', path);
+      gratPath.attr('d', path);
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
 
-      // Land masses
-      landGroup.selectAll('path.land')
-        .data(countries.features)
-        .enter().append('path')
-        .attr('class', 'land')
-        .attr('d', path)
-        .attr('fill', function(d) {
-          // Vary land color slightly by feature id for visual depth
-          const id = +d.id % 7;
-          const colors = [
-            '#4a8c3f','#3d7a35','#56a048','#3f8040',
-            '#c8a055','#b89045','#5a9444'
-          ];
-          return colors[id];
-        })
-        .attr('stroke', 'rgba(0,0,0,0.18)')
-        .attr('stroke-width', 0.3);
-
-      // Country borders
-      borderGroup.append('path')
-        .datum(borders)
-        .attr('d', path)
-        .attr('fill', 'none')
-        .attr('stroke', 'rgba(0,0,0,0.22)')
-        .attr('stroke-width', 0.5);
-
-      // Auto-rotate
-      let rotation = [0, -20, 0];
-      let lastTime = null;
-      const speed  = 8; // degrees per second
-
-      function animate(ts) {
-        if (!lastTime) lastTime = ts;
-        const dt = (ts - lastTime) / 1000;
-        lastTime = ts;
-        rotation[0] += speed * dt;
-        projection.rotate(rotation);
-
-        // Update all clipped paths
-        landGroup.selectAll('path.land').attr('d', path);
-        graticuleGroup.select('path').attr('d', path);
-        borderGroup.select('path').attr('d', path);
-
-        requestAnimationFrame(animate);
-      }
-      requestAnimationFrame(animate);
-    }).catch(function() {
-      // Fallback if topojson fails to load: draw simple sphere with grid
-      svg.append('text')
-        .attr('x', CX).attr('y', CY)
-        .attr('text-anchor', 'middle')
-        .attr('fill', 'rgba(255,255,255,0.3)')
-        .attr('font-size', '14')
-        .text('Cargando globo...');
-    });
   })();
   </script>
 
