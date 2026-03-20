@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acerca de — Crónicas Cósmicas</title>
+  <meta name="description" content="Crónicas Cósmicas es una enciclopedia cronológica del universo que une ciencia, historia y perspectiva bíblica en español.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://cronicascosmicas.com/acerca-de.html">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .policy-container { max-width: 760px; margin: 0 auto; padding: calc(var(--header-h) + 3rem) clamp(1.2rem, 6vw, 2.5rem) clamp(3rem, 8vw, 6rem); }
+    .policy-title { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3rem); font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem; }
+    .policy-date { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 2.5rem; display: block; }
+    .policy-body h2 { font-family: var(--font-display); font-size: 1.4rem; font-weight: 600; color: var(--text-primary); margin: 2.5rem 0 0.75rem; padding-top: 1rem; border-top: 1px solid var(--border-soft); }
+    .policy-body p { font-size: 1rem; font-weight: 300; line-height: 1.85; margin-bottom: 1.2rem; color: var(--text-secondary); }
+    .policy-body .lead { font-size: 1.15rem; color: var(--text-secondary); font-style: italic; border-left: 2px solid var(--accent-gold); padding-left: 1.2rem; margin-bottom: 2rem; }
+    .back-link { display: inline-flex; align-items: center; gap: 0.45rem; color: var(--text-muted); font-size: 0.76rem; letter-spacing: 0.09em; text-transform: uppercase; margin-bottom: 2rem; transition: color 0.2s; }
+    .back-link:hover { color: var(--accent-gold); }
+  </style>
+</head>
+<body>
+
+  <header class="site-header scrolled" id="siteHeader">
+    <div class="header-inner">
+      <a href="index.html" class="site-logo">Cronicas<span>Cosmicas</span></a>
+      <nav>
+        <ul class="header-nav" id="headerNav">
+          <li><a href="index.html">Universo</a></li>
+          <li><a href="index.html">Tierra</a></li>
+          <li><a href="index.html">Evolución</a></li>
+          <li><a href="index.html">Civilizaciones</a></li>
+          <li><a href="index.html">Ver todo</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="policy-container">
+    <a class="back-link" href="index.html">&#8592; Volver al inicio</a>
+    <h1 class="policy-title">Acerca de Crónicas Cósmicas</h1>
+    <span class="policy-date">Un proyecto de divulgación en español</span>
+
+    <div class="policy-body">
+      <p class="lead">Desde el Big Bang hasta la inteligencia artificial — una enciclopedia cronológica del universo que une ciencia, historia y perspectiva bíblica.</p>
+
+      <h2>¿Qué es Crónicas Cósmicas?</h2>
+      <p>Crónicas Cósmicas es un proyecto de divulgación científica e histórica en español. Nuestro objetivo es contar la historia completa del universo de forma accesible, rigurosa y fascinante — desde los primeros instantes tras el Big Bang hasta los eventos más recientes de la historia humana.</p>
+
+      <h2>Nuestra perspectiva</h2>
+      <p>Creemos que la ciencia y la fe no son enemigas. Exploramos los grandes descubrimientos científicos con honestidad intelectual, y también reconocemos las preguntas que la ciencia no puede responder por sí sola. Cada artículo busca informar, no imponer una visión del mundo.</p>
+
+      <h2>Las categorías</h2>
+      <p>El contenido está organizado cronológicamente en seis grandes categorías: Universo y Cosmología, La Tierra y Geología, Evolución y Vida, Civilizaciones Antiguas, Historia Mundial, y Ciencia y Descubrimientos. Juntas forman una línea del tiempo que abarca 13,800 millones de años.</p>
+
+      <h2>Las fuentes</h2>
+      <p>Los artículos están basados en consenso científico, investigación histórica y fuentes académicas reconocidas. No somos una revista científica revisada por pares, pero nos esforzamos por ser precisos, actualizados y transparentes cuando existe debate entre expertos.</p>
+
+      <h2>Contacto</h2>
+      <p>¿Tienes sugerencias, correcciones o quieres colaborar? Puedes contactarnos a través de nuestras redes sociales. Valoramos cada mensaje.</p>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p>Crónicas Cósmicas &mdash; Una enciclopedia del universo en español &mdash; <a href="politica-privacidad.html" style="color:inherit;">Privacidad</a> &mdash; <a href="terminos-de-uso.html" style="color:inherit;">Términos</a></p>
+  </footer>
+
+  <script>
+    document.getElementById('navToggle').addEventListener('click', function(){
+      document.getElementById('headerNav').classList.toggle('open');
+    });
+  </script>
+</body>
+</html>
