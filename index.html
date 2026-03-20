@@ -3,14 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cronicas Cosmicas — La historia del universo desde el principio</title>
-  <meta name="description" content="Una enciclopedia cronológica del universo: desde el Big Bang hasta nuestros días, uniendo ciencia, historia y perspectiva bíblica en español.">
-  <meta name="robots" content="index, follow">
+
+  <link rel="icon" href="/favicon_tierra.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon_tierra.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon_tierra.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/favicon_tierra.png">
+
+
+  <title>Crónicas Cósmicas — Historia del Universo, Ciencia y Civilizaciones en Español</title>
+  <meta name="description" content="Enciclopedia cronológica del universo: Big Bang, evolución, civilizaciones antiguas e historia mundial. Ciencia e historia bíblica en español.">
+  <meta name="keywords" content="historia del universo, big bang, evolución, civilizaciones antiguas, cosmología, geología, ciencia, enciclopedia en español">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="author" content="Crónicas Cósmicas">
+  <meta name="language" content="es">
+  <link rel="canonical" href="https://cronicascosmicas.com/">
+
+  <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Cronicas Cosmicas">
-  <meta property="og:description" content="Una enciclopedia cronológica del universo desde el Big Bang hasta hoy.">
+  <meta property="og:site_name" content="Crónicas Cósmicas">
+  <meta property="og:title" content="Crónicas Cósmicas — Historia del Universo desde el Big Bang">
+  <meta property="og:description" content="Enciclopedia cronológica del universo: Big Bang, evolución, civilizaciones antiguas e historia mundial en español.">
+  <meta property="og:url" content="https://cronicascosmicas.com/">
   <meta property="og:locale" content="es_ES">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Cronicas Cosmicas","description":"Enciclopedia cronológica del universo","inLanguage":"es"}</script>
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Crónicas Cósmicas — Historia del Universo">
+  <meta name="twitter:description" content="Enciclopedia cronológica del universo: Big Bang, evolución, civilizaciones antiguas e historia mundial.">
+
+  <!-- Schema.org WebSite + Sitelinks Searchbox -->
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Crónicas Cósmicas","alternateName":"Cronicas Cosmicas","url":"https://cronicascosmicas.com/","description":"Enciclopedia cronológica del universo desde el Big Bang hasta la inteligencia artificial","inLanguage":"es","potentialAction":{"@type":"SearchAction","target":"https://cronicascosmicas.com/?buscar={search_term_string}","query-input":"required name=search_term_string"}}</script>
+
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -38,6 +61,7 @@
   <!-- HERO -->
   <section class="site-hero">
     <div class="hero-stars"></div>
+    <canvas id="starsCanvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;"></canvas>
 
     <div class="hero-layout">
 
@@ -54,9 +78,7 @@
       </div>
 
       <div class="hero-globe-side">
-        <div class="globe-wrapper">
-          <canvas id="globe-canvas"></canvas>
-        </div>
+        <div class="globe-wrapper" id="globeContainer" style="width:min(95%, clamp(380px, 52vw, 680px)); aspect-ratio:1;"></div>
       </div>
 
     </div>
@@ -96,8 +118,7 @@
     </div>
     <div class="tabs-wrapper">
       <div class="tabs" id="tabs">
-        <button class="tab active" data-cat="Todos">Todos</button>
-        <button class="tab" data-cat="Universo y Cosmología">Universo y Cosmología</button>
+        <button class="tab active" data-cat="Universo y Cosmología">Universo y Cosmología</button>
         <button class="tab" data-cat="La Tierra y Geología">La Tierra y Geología</button>
         <button class="tab" data-cat="Evolución y Vida">Evolución y Vida</button>
         <button class="tab" data-cat="Civilizaciones Antiguas">Civilizaciones Antiguas</button>
@@ -117,158 +138,56 @@
     <p>Cronicas Cosmicas &mdash; Una enciclopedia del universo en español</p>
   </footer>
 
-  <!-- D3 v7 -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+  <!-- Globe.gl -->
+  <script src="https://unpkg.com/globe.gl@2.27.2/dist/globe.gl.min.js"></script>
 
-  <!-- GLOBO D3 CANVAS -->
+  <!-- GLOBO -->
   <script>
-  (function() {
-    var canvas = document.getElementById('globe-canvas');
-    var ctx    = canvas.getContext('2d');
+  window.addEventListener('load', function () {
+    var container = document.getElementById('globeContainer');
+    var size = container.clientWidth || 460;
 
-    // Tamaño: igual al wrapper en CSS pixels. Sin DPR. Sin transforms acumulados.
-    function setSize() {
-      var s = canvas.parentElement.clientWidth;
-      canvas.width  = s;
-      canvas.height = s;
-    }
-    setSize();
-    window.addEventListener('resize', setSize);
+    var globe = Globe()(container)
+      .width(size)
+      .height(size)
+      .backgroundColor('rgba(0,0,0,0)')
+      .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-day.jpg')
+      .atmosphereColor('#88ccff')
+      .atmosphereAltitude(0.25);
 
-    // Continentes como GeoJSON embebido — sin fetch, sin red
-    var geo = {type:'FeatureCollection',features:[
-      // América del Norte
-      {type:'Feature',properties:{c:'#4e8c3a'},geometry:{type:'Polygon',coordinates:[[
-        [-168,72],[-140,72],[-120,78],[-85,83],[-65,83],[-55,72],[-52,60],
-        [-55,46],[-66,44],[-70,42],[-75,36],[-80,30],[-88,20],[-85,12],
-        [-78,8],[-77,8],[-80,10],[-84,14],[-90,16],[-92,18],[-97,22],
-        [-106,24],[-110,28],[-116,30],[-122,36],[-124,40],[-124,46],
-        [-130,54],[-140,56],[-148,60],[-152,58],[-160,54],[-168,60],[-168,72]
-      ]]}},
-      // América del Sur
-      {type:'Feature',properties:{c:'#447c31'},geometry:{type:'Polygon',coordinates:[[
-        [-78,10],[-76,8],[-62,10],[-60,6],[-50,2],[-48,-4],[-35,-8],
-        [-34,-14],[-36,-18],[-40,-20],[-42,-24],[-50,-28],[-52,-34],
-        [-54,-38],[-58,-40],[-62,-42],[-66,-46],[-66,-52],[-68,-56],
-        [-70,-52],[-72,-46],[-70,-42],[-72,-36],[-72,-30],[-70,-22],
-        [-68,-18],[-70,-14],[-76,-8],[-80,-4],[-80,0],[-78,6],[-78,10]
-      ]]}},
-      // Europa
-      {type:'Feature',properties:{c:'#529141'},geometry:{type:'Polygon',coordinates:[[
-        [-10,36],[0,36],[4,42],[8,44],[14,46],[20,48],[26,50],[28,56],
-        [26,60],[20,62],[14,66],[20,70],[28,72],[30,68],[36,64],[34,58],
-        [28,52],[24,48],[28,44],[34,42],[36,40],[28,40],[22,38],[16,38],
-        [10,42],[4,44],[-2,44],[-8,44],[-10,38],[-10,36]
-      ]]}},
-      // África
-      {type:'Feature',properties:{c:'#c09640'},geometry:{type:'Polygon',coordinates:[[
-        [-18,14],[-14,10],[-12,6],[-8,4],[-4,4],[0,6],[6,4],[10,2],
-        [14,2],[16,4],[20,4],[24,2],[30,0],[34,-2],[38,-2],[40,4],
-        [44,8],[44,12],[42,16],[42,22],[36,24],[32,26],[30,30],[32,36],
-        [36,38],[34,36],[28,36],[24,34],[16,32],[12,34],[10,36],[8,38],
-        [4,38],[0,34],[-4,32],[-8,28],[-14,22],[-18,18],[-18,14]
-      ]]}},
-      // Asia
-      {type:'Feature',properties:{c:'#467e36'},geometry:{type:'Polygon',coordinates:[[
-        [36,40],[40,38],[44,40],[50,40],[54,42],[60,42],[66,40],[72,36],
-        [76,34],[80,30],[84,26],[88,24],[92,22],[96,18],[100,14],[104,10],
-        [108,12],[112,16],[116,20],[120,22],[124,24],[126,28],[128,34],
-        [130,40],[132,46],[134,50],[136,54],[132,58],[128,62],[124,64],
-        [118,68],[110,70],[100,72],[90,74],[80,74],[70,72],[60,70],
-        [50,70],[44,68],[38,64],[34,60],[30,56],[28,52],[34,50],[36,46],[36,40]
-      ]]}},
-      // Oceanía
-      {type:'Feature',properties:{c:'#6aaa48'},geometry:{type:'Polygon',coordinates:[[
-        [114,-22],[118,-18],[122,-18],[128,-14],[132,-12],[136,-14],
-        [138,-18],[140,-22],[142,-26],[144,-28],[148,-24],[152,-24],
-        [154,-28],[152,-34],[148,-38],[144,-38],[140,-34],[136,-30],
-        [132,-28],[128,-26],[122,-24],[118,-22],[114,-22]
-      ]]}},
-      // Groenlandia
-      {type:'Feature',properties:{c:'#c8dde8'},geometry:{type:'Polygon',coordinates:[[
-        [-44,60],[-36,64],[-24,70],[-20,76],[-26,80],
-        [-34,84],[-44,84],[-52,80],[-56,74],[-52,68],[-44,60]
-      ]]}},
-      // Antártida
-      {type:'Feature',properties:{c:'#daeaf4'},geometry:{type:'Polygon',coordinates:[[
-        [0,-70],[60,-72],[120,-70],[180,-68],[180,-90],[0,-90],[0,-70]
-      ]]}}
-    ]};
+    // Rotación automática (se pausa cuando el usuario interactúa)
+    globe.controls().autoRotate = true;
+    globe.controls().autoRotateSpeed = 1.2;
+    globe.controls().enableZoom = false;
 
-    var SPHERE    = {type:'Sphere'};
-    var graticule = d3.geoGraticule()();
-    var yaw       = 0;
-    var lastTs    = null;
+    // Más luz
+    var scene = globe.scene();
+    scene.children.forEach(function(o) {
+      if (o.type === 'DirectionalLight' || o.type === 'AmbientLight') {
+        o.intensity = 2.5;
+      }
+    });
 
-    function draw(ts) {
-      if (!lastTs) lastTs = ts;
-      yaw += (ts - lastTs) / 1000 * 7;
-      lastTs = ts;
+    // Pausa autorotación al arrastrar, la reanuda al soltar
+    container.addEventListener('mousedown', function () {
+      globe.controls().autoRotate = false;
+    });
+    container.addEventListener('touchstart', function () {
+      globe.controls().autoRotate = false;
+    });
+    container.addEventListener('mouseup', function () {
+      globe.controls().autoRotate = true;
+    });
+    container.addEventListener('touchend', function () {
+      globe.controls().autoRotate = true;
+    });
 
-      var W  = canvas.width;
-      var R  = W / 2 - 2;
-      var cx = W / 2;
-      var cy = W / 2;
-
-      var proj = d3.geoOrthographic()
-        .scale(R)
-        .translate([cx, cy])
-        .clipAngle(90)
-        .rotate([yaw, -20, 0]);
-
-      var path = d3.geoPath().projection(proj).context(ctx);
-
-      ctx.clearRect(0, 0, W, W);
-
-      // Océano
-      var oc = ctx.createRadialGradient(cx - R*0.22, cy - R*0.22, 0, cx, cy, R);
-      oc.addColorStop(0,   '#2282c0');
-      oc.addColorStop(0.5, '#0d4878');
-      oc.addColorStop(1,   '#030e1c');
-      ctx.beginPath(); path(SPHERE);
-      ctx.fillStyle = oc; ctx.fill();
-
-      // Graticule
-      ctx.beginPath(); path(graticule);
-      ctx.strokeStyle = 'rgba(255,255,255,0.07)';
-      ctx.lineWidth   = 0.5;
-      ctx.stroke();
-
-      // Continentes
-      geo.features.forEach(function(f) {
-        ctx.beginPath(); path(f);
-        ctx.fillStyle   = f.properties.c; ctx.fill();
-        ctx.strokeStyle = 'rgba(0,0,0,0.18)';
-        ctx.lineWidth   = 0.4; ctx.stroke();
-      });
-
-      // Sombra nocturna
-      var sh = ctx.createLinearGradient(cx - R*0.1, cy, cx + R, cy);
-      sh.addColorStop(0,   'rgba(0,0,0,0)');
-      sh.addColorStop(0.5, 'rgba(0,4,18,0.28)');
-      sh.addColorStop(1,   'rgba(0,3,14,0.82)');
-      ctx.beginPath(); path(SPHERE);
-      ctx.fillStyle = sh; ctx.fill();
-
-      // Destello solar
-      var gx = cx - R*0.3, gy = cy - R*0.32;
-      var gl = ctx.createRadialGradient(gx, gy, 0, gx, gy, R*0.35);
-      gl.addColorStop(0,   'rgba(255,255,255,0.10)');
-      gl.addColorStop(0.6, 'rgba(255,255,255,0.02)');
-      gl.addColorStop(1,   'rgba(255,255,255,0)');
-      ctx.beginPath(); path(SPHERE);
-      ctx.fillStyle = gl; ctx.fill();
-
-      // Borde
-      ctx.beginPath(); path(SPHERE);
-      ctx.strokeStyle = 'rgba(80,160,255,0.22)';
-      ctx.lineWidth   = 1.5; ctx.stroke();
-
-      requestAnimationFrame(draw);
-    }
-
-    requestAnimationFrame(draw);
-  })();
+    // Responsive: ajustar tamaño al redimensionar
+    window.addEventListener('resize', function () {
+      var s = container.clientWidth;
+      globe.width(s).height(s);
+    });
+  });
   </script>
 
   <!-- ARTICLES JS -->
@@ -281,22 +200,44 @@
       {label:'Historia Mundial',          archivo:'data/historia.json'},
       {label:'Ciencia y Descubrimientos', archivo:'data/ciencia.json'}
     ];
-    var PER_PAGE=9, allArticles=[], filtered=[], currentCat='Todos', currentQ='', page=1;
+    var PER_PAGE=9, allArticles=[], filtered=[], currentCat='Universo y Cosmología', currentQ='', page=1;
+    var cacheCategoria = {};
 
-    async function loadAll() {
-      var res = await Promise.all(CATEGORIAS.map(function(c){
-        return fetch(c.archivo).then(function(r){return r.json();}).catch(function(){return [];});
-      }));
-      allArticles = [].concat.apply([], res);
-      document.getElementById('totalArticulos').textContent = allArticles.length;
-      applyFilters();
+    async function loadCategoria(cat) {
+      if (cacheCategoria[cat]) {
+        allArticles = cacheCategoria[cat];
+        applyFilters();
+        return;
+      }
+      var catObj = CATEGORIAS.find(function(c){ return c.label === cat; });
+      if (!catObj) return;
+      try {
+        var res = await fetch(catObj.archivo).then(function(r){ return r.json(); }).catch(function(){ return []; });
+        cacheCategoria[cat] = res;
+        allArticles = res;
+        document.getElementById('totalArticulos').textContent = res.length;
+        applyFilters();
+      } catch(e) {}
     }
+
+    loadCategoria('Universo y Cosmología');
+
+    // Contar total de todos los artículos en background
+    (async function() {
+      var totales = await Promise.all(CATEGORIAS.map(function(c){
+        return fetch(c.archivo)
+          .then(function(r){ return r.json(); })
+          .then(function(arr){ return arr.length; })
+          .catch(function(){ return 0; });
+      }));
+      var total = totales.reduce(function(a,b){ return a+b; }, 0);
+      document.getElementById('totalArticulos').textContent = total;
+    })();
 
     function applyFilters() {
       var q = currentQ.toLowerCase().trim();
       filtered = allArticles.filter(function(a){
-        return (currentCat==='Todos' || a.categoria===currentCat) &&
-               (!q || a.titulo.toLowerCase().includes(q) || (a.descripcion&&a.descripcion.toLowerCase().includes(q)));
+        return !q || a.titulo.toLowerCase().includes(q) || (a.descripcion&&a.descripcion.toLowerCase().includes(q));
       });
       page=1; render(); renderPagination();
       var n=filtered.length;
@@ -308,7 +249,9 @@
       var items=filtered.slice((page-1)*PER_PAGE, page*PER_PAGE);
       if(!items.length){grid.innerHTML='<div class="empty-state">No se encontraron artículos.</div>';return;}
       grid.innerHTML=items.map(function(a){
-        return '<article class="article-card" onclick="location.href=\'articulo.html?slug='+a.slug+'\'">'
+        // Apunta a /articulos/slug.html generado por generar.js
+        var href = 'articulos/' + a.slug + '.html';
+        return '<article class="article-card" onclick="location.href=\''+href+'\'">'
           +'<div class="card-image-wrapper">'
           +'<img class="card-image" src="'+a.imagen+'" alt="'+(a.imagen_alt||a.titulo)+'" loading="lazy"'
           +' onerror="this.src=\'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=800&q=60\'">'
@@ -348,8 +291,10 @@
 
     function switchTab(cat){
       currentCat=cat;
+      currentQ='';
+      document.getElementById('searchInput').value = '';
       document.querySelectorAll('.tab').forEach(function(b){b.classList.toggle('active',b.dataset.cat===cat);});
-      applyFilters();
+      loadCategoria(cat);
     }
 
     function fmt(d){
@@ -372,7 +317,47 @@
     document.getElementById('headerNav').addEventListener('click',function(e){
       if(e.target.tagName==='A')document.getElementById('headerNav').classList.remove('open');
     });
-    loadAll();
+  </script>
+
+  <!-- ESTRELLAS ANIMADAS -->
+  <script>
+  (function() {
+    var c = document.getElementById('starsCanvas');
+    var ctx = c.getContext('2d');
+    var stars = [];
+
+    function resize() {
+      c.width  = c.offsetWidth;
+      c.height = c.offsetHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    for (var i = 0; i < 220; i++) {
+      stars.push({
+        x: Math.random() * c.width,
+        y: Math.random() * c.height,
+        r: Math.random() * 1.3 + 0.2,
+        alpha: Math.random(),
+        speed: Math.random() * 0.008 + 0.002,
+        dir: Math.random() > 0.5 ? 1 : -1
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, c.width, c.height);
+      stars.forEach(function(s) {
+        s.alpha += s.speed * s.dir;
+        if (s.alpha >= 1 || s.alpha <= 0) s.dir *= -1;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255,255,255,' + s.alpha.toFixed(3) + ')';
+        ctx.fill();
+      });
+      requestAnimationFrame(draw);
+    }
+    draw();
+  })();
   </script>
 
 </body>

@@ -9,5 +9,19 @@
     "imagen": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&q=80",
     "imagen_alt": "Manzana cayendo representando la ley de gravedad",
     "contenido": "<h2>El hombre que explicó el cosmos</h2><p>Isaac Newton tenía 23 años cuando, huyendo de la peste bubónica en Cambridge, regresó a su granja en Woolsthorpe. En esos dos años de aislamiento, entre 1665 y 1667, desarrolló el cálculo diferencial, descubrió que la luz blanca contiene todos los colores y formuló la ley de la gravedad universal.</p><h2>La ley que lo unificó todo</h2><p>La intuición de Newton fue radical: la misma fuerza que hace caer una manzana es la que mantiene a la Luna en órbita alrededor de la Tierra y a la Tierra en órbita alrededor del Sol. Una sola ecuación describía el comportamiento de todo el universo visible.</p><h2>Fe y ciencia en Newton</h2><p>Newton era profundamente religioso. Escribió más sobre teología que sobre física y creía que sus descubrimientos revelaban el orden racional que Dios había impuesto al universo. Para él, estudiar la naturaleza era estudiar la mente de Dios.</p>"
-  }
+  },
+
+  {
+  "id": 502,
+  "slug": "darwin-y-la-teoria-de-la-evolucion",
+  "titulo": "Darwin y la evolución: el viaje que cambió la biología para siempre",
+  "categoria": "Ciencia y Descubrimientos",
+  "fecha": "2024-01-15",
+  "descripcion": "En 1859, Charles Darwin publicó El origen de las especies y propuso que todas las formas de vida descienden de un ancestro común mediante selección natural.",
+  "imagen": "https://images.unsplash.com/photo-1444927714506-8492d94b4e3d?w=1200&q=80",
+  "imagen_alt": "Galápagos representando el viaje de Darwin",
+  "contenido": "<h2>El viaje que lo cambió todo</h2><p>En 1831, un joven naturalista de 22 años abordó el HMS Beagle rumbo a América del Sur y las islas Galápagos. Durante cinco años, Charles Darwin recolectó especímenes, observó fósiles y notó algo perturbador: las especies no eran fijas. Cambiaban. Se adaptaban. Y algunas desaparecían para siempre.</p><h2>La selección natural</h2><p>La idea central de Darwin era elegante en su simplicidad: los individuos con características que les ayudan a sobrevivir y reproducirse transmiten esas características a su descendencia. Con el tiempo, esas variaciones se acumulan hasta producir nuevas especies. No hay diseño consciente, solo presión del entorno.</p><h2>Una idea que tardó 20 años en publicarse</h2><p>Darwin tardó más de dos décadas en publicar su teoría. Sabía lo que implicaba: contradecía la creación literal y desafiaba la idea de que el ser humano era una creación especial y separada del resto de los animales. Solo cuando Alfred Russell Wallace llegó independientemente a la misma conclusión, Darwin se decidió a publicar.</p><h2>Fe, ciencia y controversia</h2><p>Darwin era cristiano y encontraba la grandeza de Dios en la complejidad de la naturaleza. Sin embargo, su teoría generó un conflicto profundo con la Iglesia que persiste en algunos sectores hasta hoy. La evolución es hoy el pilar central de toda la biología moderna y una de las teorías científicas mejor respaldadas por evidencia.</p>"
+}
+
+
 ]
