@@ -9,5 +9,17 @@
     "imagen": "https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=1200&q=80",
     "imagen_alt": "Ruinas del Coliseo Romano en Italia",
     "contenido": "<h2>El imperio que duró mil años</h2><p>Roma dominó el mundo mediterráneo durante más de mil años. En su apogeo, controlaba un territorio que iba desde Escocia hasta Mesopotamia, con una población estimada de 70 millones de personas.</p><h2>Las causas de la caída</h2><p>Los historiadores debaten las causas: la presión de los pueblos germánicos, la crisis económica, la corrupción política, las epidemias, la división entre Oriente y Occidente. Probablemente todas contribuyeron.</p><h2>La Iglesia como continuadora</h2><p>Lo que sobrevivió a Roma fue la Iglesia Católica, que preservó el latín, el derecho romano y la cultura clásica a través de los monasterios medievales. En muchos sentidos, Roma no murió — se transformó.</p>"
-  }
+  },
+
+  {
+  "id": 402,
+  "slug": "primera-guerra-mundial-origen",
+  "titulo": "La Primera Guerra Mundial: cómo un disparo en Sarajevo incendió Europa",
+  "categoria": "Historia Mundial",
+  "fecha": "2024-01-20",
+  "descripcion": "En junio de 1914, el asesinato del archiduque Francisco Fernando desencadenó una serie de alianzas y ultimátums que arrastró a 30 naciones a la guerra más devastadora que el mundo había visto.",
+  "imagen": "https://images.unsplash.com/photo-1580130775562-0ef92da028de?w=1200&q=80",
+  "imagen_alt": "Memorial de la Primera Guerra Mundial",
+  "contenido": "<h2>El disparo que cambió el siglo</h2><p>El 28 de junio de 1914, el joven nacionalista bosnio Gavrilo Princip disparó dos veces en Sarajevo. Las balas mataron al heredero del Imperio Austro-Húngaro y a su esposa. En seis semanas, Europa entera estaba en guerra.</p><h2>Un continente de alianzas explosivas</h2><p>Europa llevaba décadas construyendo un sistema de alianzas militares que nadie controlaba del todo. Cuando Austria-Hungría declaró la guerra a Serbia, Rusia movilizó su ejército. Alemania declaró la guerra a Rusia. Francia entró por su alianza con Rusia. Alemania invadió Bélgica. Gran Bretaña declaró la guerra a Alemania. En menos de un mes, el continente entero ardía.</p><h2>La guerra que nadie esperaba</h2><p>Los líderes europeos de 1914 creían que sería una guerra corta — semanas, quizás meses. Terminó cuatro años después, con 20 millones de muertos, cuatro imperios destruidos y el mapa de Europa completamente reconfigurado.</p><h2>Las raíces bíblicas del conflicto</h2><p>Muchos soldados de ambos bandos marcharon a la guerra convencidos de que Dios estaba de su lado. Los capellanes militares bendecían los cañones. Los sermones llamaban al sacrificio patriótico como deber cristiano. Fue uno de los momentos más oscuros de la historia de la fe en Europa.</p>"
+}
 ]
