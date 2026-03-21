@@ -9,29 +9,21 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon_tierra.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/favicon_tierra.png">
 
-  <title id="pageTitle">Cargando... — Crónicas Cósmicas</title>
-  <meta id="metaDesc"  name="description"        content="">
-  <meta id="ogTitle"   property="og:title"        content="">
-  <meta id="ogDesc"    property="og:description"  content="">
-  <meta id="ogImage"   property="og:image"        content="">
-  <meta id="ogUrl"     property="og:url"          content="">
-  <meta property="og:type"   content="article">
-  <meta property="og:site_name" content="Crónicas Cósmicas">
+  <title id="pageTitle">Cargando... — Cronicas Cosmicas</title>
+  <meta id="metaDesc" name="description" content="">
+  <meta id="ogTitle" property="og:title" content="">
+  <meta id="ogDesc" property="og:description" content="">
+  <meta id="ogImage" property="og:image" content="">
+  <meta property="og:type" content="article">
   <meta property="og:locale" content="es_ES">
-  <meta id="twCard"    name="twitter:card"        content="summary_large_image">
-  <meta id="twTitle"   name="twitter:title"       content="">
-  <meta id="twDesc"    name="twitter:description" content="">
-  <meta id="twImage"   name="twitter:image"       content="">
-  <link id="canonicalTag" rel="canonical" href="">
-
+  <link rel="canonical" href="" id="canonicalTag">
   <link rel="stylesheet" href="css/style.css">
 
   <style>
-    /* ── Barra de progreso de lectura ───────────────────────── */
+    /* ── Barra de progreso de lectura ──────────────────────── */
     #readProgress {
       position: fixed;
-      top: 0;
-      left: 0;
+      top: 0; left: 0;
       height: 3px;
       width: 0%;
       background: linear-gradient(90deg, var(--accent-gold, #9e7228), #e2a84b);
@@ -40,13 +32,13 @@
       pointer-events: none;
     }
 
-    /* ── Hero ───────────────────────────────────────────────── */
+    /* ── Hero ──────────────────────────────────────────────── */
     .article-hero {
       position: relative;
       width: 100%;
       height: clamp(260px, 45vw, 520px);
       overflow: hidden;
-      margin-top: var(--header-h, 64px);
+      margin-top: var(--header-h);
       background: #07192e;
     }
     .article-hero img {
@@ -65,7 +57,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.05) 55%, var(--bg-base, #060f1a) 100%);
+      background: linear-gradient(to bottom, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.05) 55%, var(--bg-base) 100%);
       pointer-events: none;
     }
     .hero-cat-badge {
@@ -75,44 +67,45 @@
       z-index: 2;
       background: rgba(158, 114, 40, 0.9);
       color: #fff;
+      font-family: var(--font-body);
       font-size: 0.68rem;
       font-weight: 400;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       padding: 0.3rem 0.8rem;
-      border-radius: var(--radius, 4px);
+      border-radius: var(--radius);
       backdrop-filter: blur(8px);
     }
 
-    /* ── Contenedor ─────────────────────────────────────────── */
+    /* ── Contenedor ────────────────────────────────────────── */
     .article-container {
       max-width: 760px;
       margin: 0 auto;
       padding: 0 clamp(1.2rem, 6vw, 2.5rem) clamp(3rem, 8vw, 6rem);
     }
 
-    /* ── Volver ─────────────────────────────────────────────── */
+    /* ── Botón volver ──────────────────────────────────────── */
     .back-link {
       display: inline-flex;
       align-items: center;
       gap: 0.45rem;
-      color: var(--text-muted, #8a9bb0);
+      color: var(--text-muted);
       font-size: 0.76rem;
       letter-spacing: 0.09em;
       text-transform: uppercase;
       margin: 2rem 0 1.5rem;
       transition: color 0.2s;
-      text-decoration: none;
       cursor: pointer;
       background: none;
       border: none;
       padding: 0;
+      text-decoration: none;
     }
     .back-link:hover,
-    .back-link:focus-visible { color: var(--accent-gold, #9e7228); outline: none; }
-    .back-link:focus-visible { outline: 2px solid var(--accent-gold, #9e7228); outline-offset: 3px; border-radius: 2px; }
+    .back-link:focus-visible { color: var(--accent-gold); outline: none; }
+    .back-link:focus-visible { outline: 2px solid var(--accent-gold); outline-offset: 3px; border-radius: 2px; }
 
-    /* ── Meta ───────────────────────────────────────────────── */
+    /* ── Meta, título, lead, body ──────────────────────────── */
     .article-meta {
       display: flex;
       align-items: center;
@@ -121,102 +114,91 @@
       flex-wrap: wrap;
     }
     .meta-category {
-      color: var(--accent-gold, #9e7228);
+      color: var(--accent-gold);
       font-size: 0.7rem;
       font-weight: 300;
       letter-spacing: 0.16em;
       text-transform: uppercase;
       border: 1px solid rgba(158,114,40,0.3);
       padding: 0.22rem 0.65rem;
-      border-radius: var(--radius, 4px);
+      border-radius: var(--radius);
     }
-    .meta-date { color: var(--text-muted, #8a9bb0); font-size: 0.8rem; font-weight: 300; }
-
-    /* ── Título, lead, body ─────────────────────────────────── */
+    .meta-date { color: var(--text-muted); font-size: 0.8rem; font-weight: 300; }
     .article-title {
-      font-family: var(--font-display, serif);
+      font-family: var(--font-display);
       font-size: clamp(2rem, 5vw, 3.4rem);
       font-weight: 600;
       line-height: 1.1;
-      color: var(--text-primary, #e8f0f8);
+      color: var(--text-primary);
       margin-bottom: 1.2rem;
     }
     .article-lead {
       font-size: clamp(1.05rem, 2.5vw, 1.18rem);
       font-weight: 300;
-      color: var(--text-secondary, #b0c4d8);
+      color: var(--text-secondary);
       line-height: 1.85;
       margin-bottom: 2.5rem;
       padding-bottom: 2rem;
-      border-bottom: 1px solid var(--border-soft, rgba(255,255,255,0.08));
+      border-bottom: 1px solid var(--border-soft);
     }
-    .article-body { font-size: clamp(1rem, 2vw, 1.06rem); font-weight: 300; line-height: 1.92; color: var(--text-primary, #e8f0f8); }
+    .article-body { font-size: clamp(1rem, 2vw, 1.06rem); font-weight: 300; line-height: 1.92; color: var(--text-primary); }
     .article-body h2 {
-      font-family: var(--font-display, serif);
+      font-family: var(--font-display);
       font-size: clamp(1.45rem, 3.5vw, 2rem);
       font-weight: 600;
-      color: var(--text-primary, #e8f0f8);
+      color: var(--text-primary);
       margin: 2.8rem 0 1rem;
       padding-top: 1rem;
-      border-top: 1px solid var(--border-soft, rgba(255,255,255,0.08));
+      border-top: 1px solid var(--border-soft);
     }
     .article-body h3 {
-      font-family: var(--font-display, serif);
+      font-family: var(--font-display);
       font-size: clamp(1.2rem, 2.5vw, 1.45rem);
       font-weight: 600;
-      color: var(--accent-gold, #9e7228);
+      color: var(--accent-gold);
       margin: 2rem 0 0.75rem;
     }
     .article-body p { margin-bottom: 1.45rem; }
     .article-body blockquote {
-      border-left: 2px solid var(--accent-gold, #9e7228);
+      border-left: 2px solid var(--accent-gold);
       margin: 2.2rem 0;
       padding: 1.1rem clamp(1rem, 3vw, 1.8rem);
-      background: var(--bg-surface, rgba(255,255,255,0.03));
+      background: var(--bg-surface);
       font-style: italic;
       font-size: 1.08rem;
-      color: var(--text-secondary, #b0c4d8);
-      border-radius: 0 var(--radius, 4px) var(--radius, 4px) 0;
+      color: var(--text-secondary);
+      border-radius: 0 var(--radius) var(--radius) 0;
     }
-    .article-body strong { color: var(--text-primary, #e8f0f8); font-weight: 600; }
+    .article-body strong { color: var(--text-primary); font-weight: 600; }
     .article-body ul, .article-body ol { padding-left: 1.5rem; margin-bottom: 1.4rem; }
     .article-body li { margin-bottom: 0.5rem; }
-    .article-body hr {
-      border: none;
-      border-top: 1px solid var(--border-soft, rgba(255,255,255,0.08));
-      margin: 2.5rem 0;
-    }
+    .article-body hr { border: none; border-top: 1px solid var(--border-soft); margin: 2.5rem 0; }
 
-    /* ── Botones de compartir ───────────────────────────────── */
+    /* ── Compartir ─────────────────────────────────────────── */
     .share-section {
       margin: 2.5rem 0;
       padding: 1.5rem;
-      border: 1px solid var(--border-soft, rgba(255,255,255,0.08));
-      border-radius: var(--radius, 4px);
-      background: var(--bg-surface, rgba(255,255,255,0.03));
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius);
+      background: var(--bg-surface);
     }
     .share-section h3 {
       font-size: 0.72rem;
       font-weight: 400;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--text-muted, #8a9bb0);
+      color: var(--text-muted);
       margin: 0 0 1rem;
     }
-    .share-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.6rem;
-    }
+    .share-buttons { display: flex; flex-wrap: wrap; gap: 0.6rem; }
     .share-btn {
       display: inline-flex;
       align-items: center;
       gap: 0.45rem;
       padding: 0.5rem 1rem;
-      border-radius: var(--radius, 4px);
+      border-radius: var(--radius);
       font-size: 0.8rem;
       font-weight: 400;
-      letter-spacing: 0.04em;
       text-decoration: none;
       border: 1px solid transparent;
       cursor: pointer;
@@ -224,92 +206,79 @@
       background: none;
     }
     .share-btn:hover { opacity: 0.8; transform: translateY(-1px); }
-    .share-btn:focus-visible { outline: 2px solid var(--accent-gold, #9e7228); outline-offset: 2px; }
-    .share-btn-x        { border-color: rgba(255,255,255,0.15); color: var(--text-primary, #e8f0f8); }
-    .share-btn-wa       { border-color: rgba(37,211,102,0.35);  color: #25d366; }
-    .share-btn-fb       { border-color: rgba(66,103,178,0.4);   color: #4267b2; }
-    .share-btn-link     { border-color: rgba(158,114,40,0.35);  color: var(--accent-gold, #9e7228); }
+    .share-btn:focus-visible { outline: 2px solid var(--accent-gold); outline-offset: 2px; }
+    .share-btn-x    { border-color: rgba(255,255,255,0.15); color: var(--text-primary); }
+    .share-btn-wa   { border-color: rgba(37,211,102,0.35);  color: #25d366; }
+    .share-btn-fb   { border-color: rgba(66,103,178,0.4);   color: #4267b2; }
+    .share-btn-link { border-color: rgba(158,114,40,0.35);  color: var(--accent-gold); }
     .share-btn-link.copied { border-color: rgba(40,180,100,0.4); color: #28b464; }
 
-    /* ── Artículos relacionados ─────────────────────────────── */
+    /* ── Artículos relacionados ────────────────────────────── */
     .related-section {
       margin-top: 3.5rem;
       padding-top: 2rem;
-      border-top: 1px solid var(--border-soft, rgba(255,255,255,0.08));
+      border-top: 1px solid var(--border-soft);
     }
     .related-section h2 {
-      font-family: var(--font-display, serif);
+      font-family: var(--font-display);
       font-size: clamp(1.2rem, 3vw, 1.6rem);
       font-weight: 600;
-      color: var(--text-primary, #e8f0f8);
+      color: var(--text-primary);
       margin-bottom: 1.5rem;
     }
     .related-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       gap: 1.2rem;
     }
     .related-card {
       display: block;
       text-decoration: none;
       color: inherit;
-      border: 1px solid var(--border-soft, rgba(255,255,255,0.08));
-      border-radius: var(--radius, 4px);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius);
       overflow: hidden;
-      background: var(--bg-surface, rgba(255,255,255,0.03));
+      background: var(--bg-surface);
       transition: border-color 0.2s, transform 0.2s;
     }
     .related-card:hover { border-color: rgba(158,114,40,0.4); transform: translateY(-3px); }
-    .related-card:focus-visible { outline: 2px solid var(--accent-gold, #9e7228); outline-offset: 2px; }
-    .related-card img {
-      width: 100%;
-      height: 130px;
-      object-fit: cover;
-      display: block;
-      opacity: 0.85;
-    }
+    .related-card:focus-visible { outline: 2px solid var(--accent-gold); outline-offset: 2px; }
+    .related-card img { width: 100%; height: 130px; object-fit: cover; display: block; opacity: 0.85; }
     .related-card-body { padding: 0.9rem; }
     .related-card-cat {
       font-size: 0.62rem;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--accent-gold, #9e7228);
+      color: var(--accent-gold);
       margin-bottom: 0.4rem;
     }
     .related-card-title {
-      font-family: var(--font-display, serif);
+      font-family: var(--font-display);
       font-size: 0.9rem;
       font-weight: 600;
-      color: var(--text-primary, #e8f0f8);
+      color: var(--text-primary);
       line-height: 1.35;
       display: -webkit-box;
-      -webkit-line-clamp: 3;
+      line-clamp: 3; 
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
 
-    /* ── Estados ────────────────────────────────────────────── */
+    /* ── Loading ───────────────────────────────────────────── */
     .loading-state {
       padding: 5rem 2rem;
       text-align: center;
-      color: var(--text-muted, #8a9bb0);
+      color: var(--text-muted);
       font-size: 1rem;
       font-weight: 300;
       letter-spacing: 0.06em;
     }
 
-    /* ── sr-only ────────────────────────────────────────────── */
-    .sr-only {
-      position: absolute; width: 1px; height: 1px;
-      padding: 0; margin: -1px; overflow: hidden;
-      clip: rect(0,0,0,0); white-space: nowrap; border: 0;
-    }
-
-    /* ── Responsive ─────────────────────────────────────────── */
+    /* ── Responsive ────────────────────────────────────────── */
     @media (max-width: 640px) {
-      .article-hero  { height: clamp(200px, 55vw, 320px); }
+      .article-hero { height: clamp(200px, 55vw, 320px); }
       .article-title { font-size: clamp(1.7rem, 6vw, 2.2rem); }
-      .related-grid  { grid-template-columns: 1fr 1fr; }
+      .related-grid { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 380px) {
       .article-title { font-size: 1.55rem; }
@@ -321,201 +290,123 @@
 <body>
 
   <!-- Barra de progreso de lectura -->
-  <div id="readProgress" role="progressbar" aria-label="Progreso de lectura" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+  <div id="readProgress" aria-hidden="true"></div>
 
-  <!-- HEADER -->
   <header class="site-header scrolled" id="siteHeader">
     <div class="header-inner">
       <a href="index.html" class="site-logo">Cronicas<span>Cosmicas</span></a>
       <nav aria-label="Navegación principal">
-        <ul class="header-nav" id="headerNav" role="list">
-          <li><a href="index.html?cat=Universo%20y%20Cosmolog%C3%ADa">Universo</a></li>
-          <li><a href="index.html?cat=La%20Tierra%20y%20Geolog%C3%ADa">Tierra</a></li>
-          <li><a href="index.html?cat=Evoluci%C3%B3n%20y%20Vida">Evolución</a></li>
-          <li><a href="index.html?cat=Civilizaciones%20Antiguas">Civilizaciones</a></li>
+        <ul class="header-nav" id="headerNav">
+          <li><a href="index.html">Universo</a></li>
+          <li><a href="index.html">Tierra</a></li>
+          <li><a href="index.html">Evolución</a></li>
+          <li><a href="index.html">Civilizaciones</a></li>
           <li><a href="index.html">Ver todo</a></li>
         </ul>
       </nav>
-      <button
-        class="nav-toggle"
-        id="navToggle"
-        aria-label="Abrir menú"
-        aria-expanded="false"
-        aria-controls="headerNav"
-      >
+      <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="headerNav">
         <span></span><span></span><span></span>
       </button>
     </div>
   </header>
 
-  <!-- Hero imagen -->
   <div class="article-hero" id="articleHero" style="display:none;" aria-hidden="true">
     <img id="heroImg" src="" alt="">
     <span class="hero-cat-badge" id="heroCatBadge"></span>
   </div>
 
-  <!-- Contenido principal -->
   <div class="article-container">
-
-    <!-- MEJORA: botón semántico accesible en lugar de <a> sin href -->
     <button class="back-link" id="backBtn" aria-label="Volver a la página anterior">
       &#8592; Volver
     </button>
-
     <div id="articleContent">
-      <div class="loading-state" aria-live="polite">Cargando artículo…</div>
+      <div class="loading-state">Cargando artículo…</div>
     </div>
-
   </div>
 
   <footer class="site-footer">
-    <p>Crónicas Cósmicas &mdash; Una enciclopedia del universo en español</p>
-    <p style="margin-top:0.5rem; font-size:0.75rem;">
-      <a href="acerca-de.html" style="color:inherit;">Acerca de</a>
-      &nbsp;&middot;&nbsp;
-      <a href="politica-privacidad.html" style="color:inherit;">Privacidad</a>
-      &nbsp;&middot;&nbsp;
-      <a href="terminos-de-uso.html" style="color:inherit;">Términos de uso</a>
-    </p>
+    <p>Cronicas Cosmicas &mdash; Una enciclopedia del universo en español</p>
   </footer>
 
   <script>
-  (() => {
-    'use strict';
-
-    const JSON_FILES = [
-      'data/universo.json', 'data/tierra.json', 'data/evolucion.json',
-      'data/civilizaciones.json', 'data/historia.json', 'data/ciencia.json'
+    var JSON_FILES = [
+      'data/universo.json','data/tierra.json','data/evolucion.json',
+      'data/civilizaciones.json','data/historia.json','data/ciencia.json'
     ];
-    const FALLBACK_IMG = 'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=800&q=60';
 
-    // ── Leer slug de la URL ───────────────────────────────────
-    const params = new URLSearchParams(window.location.search);
-    const slug   = params.get('slug');
-    if (!slug) { location.href = 'index.html'; }
+    const slug = new URLSearchParams(window.location.search).get('slug');
+    if (!slug) location.href = 'index.html';
 
-    // ── Botón volver ──────────────────────────────────────────
-    document.getElementById('backBtn').addEventListener('click', () => {
+    // Barra de progreso de lectura
+    window.addEventListener('scroll', function() {
+      var docEl = document.documentElement;
+      var scrollTop = docEl.scrollTop || document.body.scrollTop;
+      var scrollH = Math.max(document.body.scrollHeight, docEl.scrollHeight) - docEl.clientHeight;
+      var pct = scrollH > 0 ? Math.min(100, (scrollTop / scrollH) * 100) : 0;
+      document.getElementById('readProgress').style.width = pct.toFixed(1) + '%';
+    }, { passive: true });
+
+    // Menú móvil
+    document.getElementById('navToggle').addEventListener('click', function() {
+      var nav = document.getElementById('headerNav');
+      var btn = document.getElementById('navToggle');
+      var isOpen = nav.classList.toggle('open');
+      btn.setAttribute('aria-expanded', isOpen);
+      btn.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
+    });
+    document.getElementById('headerNav').addEventListener('click', function(e) {
+      if (e.target.tagName === 'A') {
+        document.getElementById('headerNav').classList.remove('open');
+        document.getElementById('navToggle').setAttribute('aria-expanded', 'false');
+        document.getElementById('navToggle').setAttribute('aria-label', 'Abrir menú');
+      }
+    });
+
+    // Botón volver
+    document.getElementById('backBtn').addEventListener('click', function() {
       if (history.length > 1) history.back();
       else location.href = 'index.html';
     });
 
-    // ── Menú móvil ────────────────────────────────────────────
-    const navToggle = document.getElementById('navToggle');
-    const headerNav = document.getElementById('headerNav');
-    navToggle.addEventListener('click', () => {
-      const isOpen = headerNav.classList.toggle('open');
-      navToggle.setAttribute('aria-expanded', isOpen);
-      navToggle.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
-    });
-    headerNav.addEventListener('click', e => {
-      if (e.target.tagName === 'A') {
-        headerNav.classList.remove('open');
-        navToggle.setAttribute('aria-expanded', 'false');
-        navToggle.setAttribute('aria-label', 'Abrir menú');
-      }
-    });
-
-    // ── Barra de progreso de lectura ──────────────────────────
-    const progressBar = document.getElementById('readProgress');
-    window.addEventListener('scroll', () => {
-      const body      = document.body;
-      const docEl     = document.documentElement;
-      const scrollTop = docEl.scrollTop || body.scrollTop;
-      const scrollH   = Math.max(body.scrollHeight, docEl.scrollHeight) - docEl.clientHeight;
-      const pct       = scrollH > 0 ? Math.min(100, (scrollTop / scrollH) * 100) : 0;
-      progressBar.style.width = pct + '%';
-      progressBar.setAttribute('aria-valuenow', Math.round(pct));
-    }, { passive: true });
-
-    // ── Header scroll ─────────────────────────────────────────
-    window.addEventListener('scroll', () => {
-      document.getElementById('siteHeader')
-        .classList.toggle('scrolled', window.scrollY > 60);
-    }, { passive: true });
-
-    // ── Formatear fecha ───────────────────────────────────────
-    function fmtDate(d) {
-      if (!d) return '';
-      return new Date(d).toLocaleDateString('es-ES', { year:'numeric', month:'long', day:'numeric' });
-    }
-
-    // ── MEJORA: caché de artículos en sessionStorage ──────────
-    // Evita re-descargar los JSONs si el usuario navegó desde index
-    const CACHE_KEY = 'cc_articles_cache';
-
-    function getCachedArticles() {
-      try {
-        const raw = sessionStorage.getItem(CACHE_KEY);
-        if (!raw) return null;
-        const { ts, data } = JSON.parse(raw);
-        // Caché válido por 10 minutos
-        if (Date.now() - ts < 10 * 60 * 1000) return data;
-      } catch { /* ignore */ }
-      return null;
-    }
-
-    function setCachedArticles(data) {
-      try {
-        sessionStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data }));
-      } catch { /* quota exceeded, ignore */ }
-    }
-
-    // ── Cargar artículo ───────────────────────────────────────
     async function loadArticle() {
-      let allArticles = getCachedArticles();
-
-      if (!allArticles) {
-        try {
-          const results = await Promise.all(
-            JSON_FILES.map(f => fetch(f).then(r => r.json()).catch(() => []))
-          );
-          allArticles = results.flat();
-          setCachedArticles(allArticles);
-        } catch {
+      try {
+        const results = await Promise.all(
+          JSON_FILES.map(f => fetch(f).then(r => r.json()).catch(() => []))
+        );
+        const allArticles = results.flat();
+        const article = allArticles.find(a => a.slug === slug);
+        if (!article) {
           document.getElementById('articleContent').innerHTML =
-            '<p style="color:var(--text-muted);text-align:center;padding:3rem 0;">Error al cargar el artículo. Intenta de nuevo.</p>';
+            '<p style="color:var(--text-muted);text-align:center;padding:3rem 0;">Artículo no encontrado.</p>';
           return;
         }
-      }
-
-      const article = allArticles.find(a => a.slug === slug);
-
-      if (!article) {
+        renderArticle(article, allArticles);
+      } catch(e) {
         document.getElementById('articleContent').innerHTML =
-          '<p style="color:var(--text-muted);text-align:center;padding:3rem 0;">Artículo no encontrado. <a href="index.html" style="color:var(--accent-gold)">Volver al inicio</a></p>';
-        return;
+          '<p style="color:var(--text-muted);text-align:center;padding:3rem 0;">Error al cargar el artículo.</p>';
       }
-
-      renderArticle(article, allArticles);
     }
 
-    // ── Renderizar artículo ───────────────────────────────────
     function renderArticle(a, allArticles) {
-      const pageUrl = `${window.location.origin}/articulos/${a.slug}.html`;
+      // Title
+      document.getElementById('pageTitle').textContent = a.titulo + ' — Cronicas Cosmicas';
 
-      // ── Head dinámico ─────────────────────────────────────
-      document.getElementById('pageTitle').textContent   = `${a.titulo} — Crónicas Cósmicas`;
-      document.getElementById('metaDesc').content        = a.descripcion || '';
+      // Meta description
+      document.getElementById('metaDesc').content = a.descripcion || '';
 
       // Open Graph
-      document.getElementById('ogTitle').content  = a.titulo;
-      document.getElementById('ogDesc').content   = a.descripcion || '';
-      document.getElementById('ogImage').content  = a.imagen || '';
-      document.getElementById('ogUrl').content    = pageUrl;
+      document.getElementById('ogTitle').content = a.titulo;
+      document.getElementById('ogDesc').content  = a.descripcion || '';
+      document.getElementById('ogImage').content = a.imagen || '';
 
-      // Twitter
-      document.getElementById('twTitle').content  = a.titulo;
-      document.getElementById('twDesc').content   = a.descripcion || '';
-      document.getElementById('twImage').content  = a.imagen || '';
+      // Canonical — clave para SEO
+      document.getElementById('canonicalTag').href =
+        window.location.origin + '/articulo.html?slug=' + a.slug;
 
-      // Canonical — apunta a la URL estática generada por generar.js
-      document.getElementById('canonicalTag').href = pageUrl;
-
-      // ── Schema.org Article ────────────────────────────────
-      const schemaScript = document.createElement('script');
-      schemaScript.type = 'application/ld+json';
-      schemaScript.textContent = JSON.stringify({
+      // Schema.org Article
+      const s = document.createElement('script');
+      s.type = 'application/ld+json';
+      s.textContent = JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": a.titulo,
@@ -523,178 +414,104 @@
         "image": a.imagen || '',
         "datePublished": a.fecha || '',
         "inLanguage": "es",
-        "url": pageUrl,
-        "author": {
-          "@type": "Organization",
-          "name": "Crónicas Cósmicas"
-        },
+        "url": window.location.origin + '/articulo.html?slug=' + a.slug,
+        "author": { "@type": "Organization", "name": "Cronicas Cosmicas" },
         "publisher": {
           "@type": "Organization",
-          "name": "Crónicas Cósmicas",
+          "name": "Cronicas Cosmicas",
           "url": window.location.origin
-        },
-        "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": pageUrl
         }
       });
-      document.head.appendChild(schemaScript);
+      document.head.appendChild(s);
 
-      // ── Breadcrumb Schema ─────────────────────────────────
-      const breadcrumbScript = document.createElement('script');
-      breadcrumbScript.type = 'application/ld+json';
-      breadcrumbScript.textContent = JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Inicio", "item": window.location.origin },
-          { "@type": "ListItem", "position": 2, "name": a.categoria, "item": `${window.location.origin}/?cat=${encodeURIComponent(a.categoria)}` },
-          { "@type": "ListItem", "position": 3, "name": a.titulo, "item": pageUrl }
-        ]
-      });
-      document.head.appendChild(breadcrumbScript);
-
-      // ── Hero imagen ───────────────────────────────────────
+      // Hero image
       if (a.imagen) {
         const hero  = document.getElementById('articleHero');
         const img   = document.getElementById('heroImg');
         const badge = document.getElementById('heroCatBadge');
-        img.alt             = a.imagen_alt || a.titulo;
-        badge.textContent   = a.categoria || '';
-        hero.style.display  = 'block';
+        img.alt           = a.imagen_alt || a.titulo;
+        badge.textContent = a.categoria || '';
+        hero.style.display = 'block';
         hero.removeAttribute('aria-hidden');
         img.onload  = () => img.classList.add('loaded');
         img.onerror = () => { hero.style.display = 'none'; };
         img.src = a.imagen;
       }
 
-      // ── Botones de compartir ──────────────────────────────
+      // Botones de compartir
+      const pageUrl      = window.location.href;
       const encodedUrl   = encodeURIComponent(pageUrl);
       const encodedTitle = encodeURIComponent(a.titulo);
 
-      const shareHTML = `
-        <div class="share-section" aria-label="Compartir artículo">
-          <h3>Compartir este artículo</h3>
-          <div class="share-buttons" role="list">
-            <a
-              class="share-btn share-btn-x"
-              href="https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}"
-              target="_blank" rel="noopener noreferrer"
-              aria-label="Compartir en X (Twitter)"
-              role="listitem"
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.261 5.634L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-              X / Twitter
-            </a>
-            <a
-              class="share-btn share-btn-wa"
-              href="https://api.whatsapp.com/send?text=${encodedTitle}%20${encodedUrl}"
-              target="_blank" rel="noopener noreferrer"
-              aria-label="Compartir por WhatsApp"
-              role="listitem"
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.533 5.861L0 24l6.341-1.499A11.93 11.93 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.8 9.8 0 01-5.034-1.387l-.361-.215-3.764.889.952-3.67-.235-.376A9.799 9.799 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
-              WhatsApp
-            </a>
-            <a
-              class="share-btn share-btn-fb"
-              href="https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}"
-              target="_blank" rel="noopener noreferrer"
-              aria-label="Compartir en Facebook"
-              role="listitem"
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-              Facebook
-            </a>
-            <button
-              class="share-btn share-btn-link"
-              id="copyLinkBtn"
-              aria-label="Copiar enlace del artículo"
-              role="listitem"
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
-              <span id="copyLinkText">Copiar enlace</span>
-            </button>
-          </div>
-        </div>`;
+      const shareHTML = '<div class="share-section">'
+        + '<h3>Compartir este artículo</h3>'
+        + '<div class="share-buttons">'
+        + '<a class="share-btn share-btn-x" href="https://twitter.com/intent/tweet?text=' + encodedTitle + '&url=' + encodedUrl + '" target="_blank" rel="noopener noreferrer" aria-label="Compartir en X">X / Twitter</a>'
+        + '<a class="share-btn share-btn-wa" href="https://api.whatsapp.com/send?text=' + encodedTitle + '%20' + encodedUrl + '" target="_blank" rel="noopener noreferrer" aria-label="Compartir por WhatsApp">WhatsApp</a>'
+        + '<a class="share-btn share-btn-fb" href="https://www.facebook.com/sharer/sharer.php?u=' + encodedUrl + '" target="_blank" rel="noopener noreferrer" aria-label="Compartir en Facebook">Facebook</a>'
+        + '<button class="share-btn share-btn-link" id="copyLinkBtn"><span id="copyLinkText">Copiar enlace</span></button>'
+        + '</div></div>';
 
-      // ── Artículos relacionados ────────────────────────────
-      const related = allArticles
+      // Artículos relacionados
+      const fallbackImg = 'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=800&q=60';
+      const related = (allArticles || [])
         .filter(r => r.slug !== a.slug && r.categoria === a.categoria)
         .slice(0, 3);
 
       const relatedHTML = related.length > 0
-        ? `<section class="related-section" aria-label="Artículos relacionados">
-            <h2>También te puede interesar</h2>
-            <div class="related-grid">
-              ${related.map(r => `
-                <a
-                  href="articulos/${r.slug}.html"
-                  class="related-card"
-                  aria-label="Leer: ${r.titulo}"
-                >
-                  <img
-                    src="${r.imagen || FALLBACK_IMG}"
-                    alt="${r.imagen_alt || r.titulo}"
-                    loading="lazy"
-                    decoding="async"
-                    onerror="this.src='${FALLBACK_IMG}'"
-                  >
-                  <div class="related-card-body">
-                    <div class="related-card-cat">${r.categoria}</div>
-                    <div class="related-card-title">${r.titulo}</div>
-                  </div>
-                </a>`).join('')}
-            </div>
-          </section>`
+        ? '<section class="related-section" aria-label="Artículos relacionados">'
+          + '<h2>También te puede interesar</h2>'
+          + '<div class="related-grid">'
+          + related.map(r =>
+              '<a href="' + r.slug + '.html" class="related-card">'
+              + '<img src="' + (r.imagen || fallbackImg) + '" alt="' + (r.imagen_alt || r.titulo) + '" loading="lazy" decoding="async" onerror="this.src=\'' + fallbackImg + '\'">'
+              + '<div class="related-card-body">'
+              + '<div class="related-card-cat">' + r.categoria + '</div>'
+              + '<div class="related-card-title">' + r.titulo + '</div>'
+              + '</div></a>'
+            ).join('')
+          + '</div></section>'
         : '';
 
-      // ── Inyectar todo el contenido ────────────────────────
+      // Contenido
       document.getElementById('articleContent').innerHTML =
         '<div class="article-meta">'
-          + `<span class="meta-category">${a.categoria || ''}</span>`
-          + `<span class="meta-date"><time datetime="${a.fecha || ''}">${fmtDate(a.fecha)}</time></span>`
+        + '<span class="meta-category">' + (a.categoria || '') + '</span>'
+        + '<span class="meta-date"><time datetime="' + (a.fecha || '') + '">' + fmtDate(a.fecha) + '</time></span>'
         + '</div>'
-        + `<h1 class="article-title">${a.titulo}</h1>`
-        + `<p class="article-lead">${a.descripcion || ''}</p>`
-        + `<div class="article-body">${a.contenido || ''}</div>`
+        + '<h1 class="article-title">' + a.titulo + '</h1>'
+        + '<p class="article-lead">' + (a.descripcion || '') + '</p>'
+        + '<div class="article-body">' + (a.contenido || '') + '</div>'
         + shareHTML
         + relatedHTML;
 
-      // ── Copiar enlace ─────────────────────────────────────
-      document.getElementById('copyLinkBtn').addEventListener('click', async () => {
-        const btn      = document.getElementById('copyLinkBtn');
+      // Copiar enlace
+      document.getElementById('copyLinkBtn').addEventListener('click', function() {
         const textSpan = document.getElementById('copyLinkText');
-        try {
-          await navigator.clipboard.writeText(pageUrl);
-          btn.classList.add('copied');
-          textSpan.textContent = '¡Enlace copiado!';
-          setTimeout(() => {
-            btn.classList.remove('copied');
-            textSpan.textContent = 'Copiar enlace';
-          }, 2500);
-        } catch {
-          // Fallback para navegadores sin clipboard API
+        const btn = document.getElementById('copyLinkBtn');
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(pageUrl).then(() => {
+            btn.classList.add('copied');
+            textSpan.textContent = '¡Enlace copiado!';
+            setTimeout(() => { btn.classList.remove('copied'); textSpan.textContent = 'Copiar enlace'; }, 2500);
+          });
+        } else {
           const ta = document.createElement('textarea');
-          ta.value = pageUrl;
-          ta.style.position = 'fixed';
-          ta.style.opacity  = '0';
-          document.body.appendChild(ta);
-          ta.select();
-          document.execCommand('copy');
-          document.body.removeChild(ta);
+          ta.value = pageUrl; ta.style.cssText = 'position:fixed;opacity:0';
+          document.body.appendChild(ta); ta.select();
+          document.execCommand('copy'); document.body.removeChild(ta);
           textSpan.textContent = '¡Copiado!';
           setTimeout(() => { textSpan.textContent = 'Copiar enlace'; }, 2500);
         }
       });
     }
 
-    // ── Arrancar ──────────────────────────────────────────────
+    function fmtDate(d) {
+      if (!d) return '';
+      return new Date(d).toLocaleDateString('es-ES', { year:'numeric', month:'long', day:'numeric' });
+    }
+
     loadArticle();
-
-  })();
   </script>
-
 </body>
-</html>
-
+</html> 
