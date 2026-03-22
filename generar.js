@@ -277,12 +277,22 @@ const staticUrls = [
   { loc: `${DOMAIN}/acerca-de.html`,        lastmod: today, changefreq: 'monthly', priority: '0.5' }
 ];
 
+// Escapa los caracteres especiales XML
+function xmlEscape(str) {
+  return (str || '')
+    .replace(/&/g,  '&amp;')
+    .replace(/</g,  '&lt;')
+    .replace(/>/g,  '&gt;')
+    .replace(/"/g,  '&quot;')
+    .replace(/'/g,  '&apos;');
+}
+
 function buildUrlTag({ loc, lastmod, changefreq, priority, imagen, tituloImg }) {
-  let tag = `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>`;
-  // MEJORA: incluir imagen en el sitemap para indexación de Google Images
+  let tag = `  <url>\n    <loc>${xmlEscape(loc)}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>`;
+  // Incluir imagen para indexación de Google Images
   if (imagen) {
-    tag += `\n    <image:image>\n      <image:loc>${imagen}</image:loc>`;
-    if (tituloImg) tag += `\n      <image:title>${tituloImg.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</image:title>`;
+    tag += `\n    <image:image>\n      <image:loc>${xmlEscape(imagen)}</image:loc>`;
+    if (tituloImg) tag += `\n      <image:title>${xmlEscape(tituloImg)}</image:title>`;
     tag += `\n    </image:image>`;
   }
   tag += `\n  </url>`;
@@ -332,4 +342,3 @@ try {
 const elapsed = ((Date.now() - startTime) / 1000).toFixed(2);
 console.log(`\n✅ ${total} artículos generados en /articulos/  (${elapsed}s)`);
 if (errores > 0) console.log(`⚠️  ${errores} error(es) durante la generación`);
-
